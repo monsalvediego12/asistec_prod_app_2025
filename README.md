@@ -1,97 +1,94 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Asistec
 
-# Getting Started
+com.asistecprod.asistecapp
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+### branch, changelog y versiones
 
-## Step 1: Start Metro
+- Los cambios se hacen en un rama aparte siempre y se fusionan con main.
+- al subir de version se crea una rama igualmente, se modifica el chagelog y la version.
+- En changelog.txt se debe introducir info de cada cambios subido.
+- Se validan los cambios y se fucionan las ramas.
+- Se debe subir de version el core_app.config.
+- Se debe subir de version el proyecto y especificar en changelog.tx la version.
+  - Actualizar manualmente package.json -> "version": "0.1.1" -> se actualiza la version
+  - yarn react-native-version --never-amend (Actualiza los dos proyectos)
+- En iOs, se debe abrir Asistec.xcworkspace en Xcode y subir el campo version y build en Targets Asistec -> Identy.
+- Clean build -> Build
+- **Ejemplo changelog.txt**
+  0.1.1 -> Version nueva
+  00-00-0000 -> Fecha de cambios
+  -xxx xxx -> Resumen de version, cambios que se hacen para la nueva version
+  00-00-0000 -> Fecha de cambios hechos en otro dia
+  -xxx xxx -> Resumen de cambios hechos otro dia
+  0.1.2 ..., ...
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+### comandos
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+app.xcworkspace
 
-```sh
-# Using npm
-npm start
+yarn install
 
-# OR using Yarn
-yarn start
-```
+cd ios
+  
+  bundle install
 
-## Step 2: Build and run your app
+  bundle exec pod install
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+npx pod-install ios
 
-### Android
+npx react-native run-android
 
-```sh
-# Using npm
-npm run android
+npx react-native run-ios
 
-# OR using Yarn
-yarn android
-```
+yarn start --reset-cache
 
-### iOS
+npx react-native start — reset-cache
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+RCT_NEW_ARCH_ENABLED=1 pod install
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+npx react-native-rename@latest "Asistec" -b "com.asistecapp"
 
-```sh
-bundle install
-```
+watchman watch-del-all
 
-Then, and every time you update your native dependencies, run:
+npx pod-install ios --allow-root
 
-```sh
-bundle exec pod install
-```
+cd android && ./gradlew signingReport
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+cd android &&./gradlew clean
 
-```sh
-# Using npm
-npm run ios
+cd android && ./gradlew assembleRelease
 
-# OR using Yarn
-yarn ios
-```
+yarn react-native-version --never-amend
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+npx react-native build-android --mode=release
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+Xcode, Product -> Clean build, Build, Archive - Window -> Organizer
 
-## Step 3: Modify your app
+Distribute App -> App Store Conect
 
-Now that you have successfully run the app, let's make changes!
+### resourses
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+https://stackoverflow.com/questions/1080556/how-can-i-test-apple-push-notification-service-without-an-iphone
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+https://stackoverflow.com/questions/76792138/sandbox-bash72986-deny1-file-write-data-users-xxx-ios-pods-resources-to-co
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+https://www.youtube.com/watch?v=r-Z--YDrmjI&t=485s&ab_channel=notJust%E2%80%A4dev
 
-## Congratulations! :tada:
+### dev_team & technical_support
 
-You've successfully run and modified your React Native App. :partying_face:
+desarrollado por: [diegomonsalve.com](https://diegomonsalve.com)
 
-### Now what?
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+### package
 
-# Troubleshooting
+https://gorhom.dev/react-native-bottom-sheet/
+yarn add @gorhom/bottom-sheet@^5
+yarn add react-native-reanimated react-native-gesture-handler
+yarn add react-native-worklets
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+yarn add @react-native-async-storage/async-storage
 
-# Learn More
+https://github.com/react-native-maps/react-native-maps/blob/master/docs/installation.md
+yarn add react-native-maps
 
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+https://reactnavigation.org/docs/getting-started/
