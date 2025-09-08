@@ -22,6 +22,7 @@ module.exports = {
       },
     ],
     // Siempre debe estar de ultimo -> reanimated
+    // 'react-native-reanimated/plugin',
     'react-native-worklets/plugin',
   ],  
 };
