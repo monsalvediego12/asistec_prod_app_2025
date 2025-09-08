@@ -1,4 +1,4 @@
-package com.asistec
+package com.asistecprod.asistecapp
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

@@ -1,4 +1,4 @@
-package com.asistec
+package com.asistecprod.asistecapp
 
 import android.app.Application
 import com.facebook.react.PackageList
