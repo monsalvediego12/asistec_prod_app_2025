@@ -48,6 +48,19 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
       </activity>
+    <activity-alias
+            android:name="${applicationId}.MainActivityDefault"
+            android:targetActivity=".MainActivity"
+            android:icon="@mipmap/ic_launcher"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:label="@string/app_name"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+      </activity-alias>      
       <meta-data
       android:name="com.google.android.geo.API_KEY"
       android:value="AIzaSyA468-FD6yfAZy1ZEjIU-Nx7mrkKxP49-0"/>
