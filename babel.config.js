@@ -1,5 +1,10 @@
 module.exports = {
   presets: ['module:@react-native/babel-preset'],
+  env: {
+    production: {
+      plugins: ['react-native-paper/babel'],
+    },
+  },
   plugins: [
     [
       'module-resolver',
@@ -22,7 +27,7 @@ module.exports = {
       },
     ],
     // Siempre debe estar de ultimo -> reanimated
-    // 'react-native-reanimated/plugin',
-    'react-native-worklets/plugin',
+    'react-native-reanimated/plugin',
+    // 'react-native-worklets/plugin',
   ],  
 };

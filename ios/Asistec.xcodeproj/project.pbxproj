@@ -12,7 +12,7 @@
 		72404B6BAF381D86DA784D9F /* Pods_Asistec.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBEB889813861A62274EFD6E /* Pods_Asistec.framework */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		F6DAF4BB2E6F3B4900C8B50B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F6DAF4BA2E6F3B4800C8B50B /* GoogleService-Info.plist */; };
+		F6DAF4BF2E6FAF9100C8B50B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F6DAF4BE2E6FAF9100C8B50B /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,7 +26,7 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Asistec/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EBEB889813861A62274EFD6E /* Pods_Asistec.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Asistec.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		F6DAF4BA2E6F3B4800C8B50B /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		F6DAF4BE2E6FAF9100C8B50B /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,7 +72,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				F6DAF4BA2E6F3B4800C8B50B /* GoogleService-Info.plist */,
+				F6DAF4BE2E6FAF9100C8B50B /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* Asistec */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
@@ -163,7 +163,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
-				F6DAF4BB2E6F3B4900C8B50B /* GoogleService-Info.plist in Resources */,
+				F6DAF4BF2E6FAF9100C8B50B /* GoogleService-Info.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				2756072B79C1A60512FC386A /* PrivacyInfo.xcprivacy in Resources */,
 			);
