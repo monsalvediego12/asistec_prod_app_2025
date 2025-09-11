@@ -6,7 +6,9 @@
  */
 
 import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View, Text, TouchableOpacity} from 'react-native';
+import { StatusBar, StyleSheet, useColorScheme, View, Text, TouchableOpacity } from 'react-native';
+import { PaperProvider } from 'react-native-paper';
+import React, { useState } from 'react';
 import {
   SafeAreaProvider,
   useSafeAreaInsets,
@@ -15,25 +17,24 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import MaterialDesignIcon from '@react-native-vector-icons/material-design-icons';
 
+// Themes
+import CoreThemeProvider, { useCoreTheme } from '@src/themes';
+
+// Components
+import ContactModalContent from './components/ContactModalContent';
+
 // Views
 
 
 const Drawer = createDrawerNavigator();
 
-function App() {
-  const isDarkMode = useColorScheme() === 'dark';
 
-  return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
-    </SafeAreaProvider>
-  );
-}
 
 function DrawerNavigator() {
+
   return (
     <Drawer.Navigator
+
       screenOptions={({ navigation }) => ({
         headerStyle: {
           backgroundColor: '#6200ea',
@@ -68,26 +69,72 @@ function DrawerNavigator() {
             <MaterialDesignIcon name="home" size={size} color={color} />
           ),
         }}
-      />              
+      />
     </Drawer.Navigator>
   );
 }
 
 function AppContent() {
   const safeAreaInsets = useSafeAreaInsets();
+  const [modalContact, setModalContact] = React.useState(false);
 
   return (
     <View style={styles.container}>
       <NavigationContainer>
-      <DrawerNavigator />
+        <DrawerNavigator />
       </NavigationContainer>
+
+      <>
+
+      </>
+      {/* Botón temporal para mostrar ContactModalContent */}
+      <TouchableOpacity
+        style={styles.tempButton}
+        onPress={() => setModalContact(true)}>
+        <Text style={styles.tempButtonText}>Mostrar Contacto (Temporal)</Text>
+      </TouchableOpacity>
+
+      <ContactModalContent
+        visible={modalContact}
+        onDismiss={() => setModalContact(false)}
+      />
+
     </View>
+  );
+}
+
+function App() {
+  const isDarkMode = useColorScheme() === 'dark';
+
+  return (
+    <SafeAreaProvider>
+      <PaperProvider>
+        <CoreThemeProvider>
+          <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+          <AppContent />
+        </CoreThemeProvider>
+      </PaperProvider>
+    </SafeAreaProvider>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  tempButton: {
+    position: 'absolute',
+    bottom: 50,
+    right: 20,
+    backgroundColor: '#6200ea',
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderRadius: 8,
+    elevation: 3,
+  },
+  tempButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
   },
 });
 export default App;
