@@ -1,5 +1,4 @@
 import * as React from 'react';
-const { memo } = React;
 import {
   // ScrollView,
   View,
@@ -20,7 +19,6 @@ import {
   CoreBottomSheet,
   CoreIconMaterial,
   CoreIconMaterialCommunity,
-  AppLayout,
   CoreImage,
 } from '@src/components/';
 
@@ -39,7 +37,7 @@ import {
 } from 'react-native-paper';
 import {useCoreReactHookForm} from '@src/hooks/CoreReactHookForm';
 import {useCoreComponents} from '@src/components/CoreComponentsProvider';
-import {UserModel} from '@src/utils/firebase/firestore';
+import {UserModel} from '@src/Apps/Asistec/utils/firebase/firestore';
 import {useFocusEffect} from '@react-navigation/native';
 import {useCoreTheme} from '@src/themes';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
@@ -58,13 +56,15 @@ import {
   NotificationsLogsModel,
   ServiceOrderCotizacionModel,
   ChatModel,
-} from '@src/utils/firebase/firestore';
+} from '@src/Apps/Asistec/utils/firebase/firestore';
 import firestore from '@react-native-firebase/firestore';
 
 import {Popup} from 'react-native-map-link';
 
 import AppConfig from '@src/app.config';
 import {asistecTheme} from '@src/themes/styles';
+import AppLayout from '@src/Apps/Asistec/components/AppLayout';
+
 const asistecData = AppConfig.asistec_data;
 
 const ModalContent = ({
@@ -370,7 +370,7 @@ const ModalContent = ({
                 <Pressable>
                   <Avatar.Image
                     size={40}
-                    source={require('@src/assets/img/customer_avatar.png')}
+                    source={require('@src/Apps/Asistec/assets/img/customer_avatar.png')}
                     style={{backgroundColor: themeData?.colors.primary}}
                   />
                 </Pressable>
@@ -452,7 +452,7 @@ const ModalContent = ({
                   onPress={() => onModalUsersInfo(serviceData?.technical_id)}>
                   <Avatar.Image
                     size={40}
-                    source={require('@src/assets/img/operator_avatar.png')}
+                    source={require('@src/Apps/Asistec/assets/img/operator_avatar.png')}
                     style={{backgroundColor: themeData?.colors.primary}}
                   />
                 </Pressable>
@@ -1124,63 +1124,6 @@ const ContentList = React.memo(
   // No need for a custom comparison function in this case
 );
 
-// Componente de mapa simplificado - sin optimizaciones que puedan causar problemas
-const SimpleMapView = ({ 
-  apiKey, 
-  region, 
-  destinationMap, 
-  originMap,
-  technicalOrigin,
-  onRegionChangeComplete,
-  onSetDirection
-}) => {
-  console.log('SimpleMapView render:', {
-    hasApiKey: !!apiKey,
-    hasRegion: !!region?.latitude,
-    regionValue: region
-  });
-
-  return (
-    <MapView
-      provider={PROVIDER_GOOGLE}
-      showsUserLocation={true}
-      style={{
-        width: '100%',
-        height: '100%',
-      }}
-      initialRegion={region}
-      onRegionChangeComplete={onRegionChangeComplete}>
-      
-      {destinationMap?.latitude && (
-        <Marker
-          coordinate={destinationMap}
-          draggable
-          onDragEnd={onSetDirection}
-          title="Destino"
-        />
-      )}
-
-      {technicalOrigin?.latitude && (
-        <Marker coordinate={technicalOrigin}>
-          <CoreImage
-            style={{width: 30, height: 30}}
-            source={require('@src/assets/img/pngwing.com.png')}
-          />
-        </Marker>
-      )}
-
-      {originMap?.latitude && destinationMap?.latitude && (
-        <MapViewDirections
-          origin={originMap}
-          destination={destinationMap}
-          strokeWidth={3}
-          apikey={apiKey}
-        />
-      )}
-    </MapView>
-  );
-};
-
 function AppView({route, navigation}) {
   const params = route.params;
   const {themeData} = useCoreTheme();
@@ -1211,11 +1154,11 @@ function AppView({route, navigation}) {
 
   const [zoom, setZoom] = React.useState(0.1); // Valor inicial del zoom
   const [defaultCoords, setDefaultCoords] = React.useState({
-    latitude: 4.711, // Bogotá, Colombia - coordenadas por defecto
-    longitude: -74.0721,
+    latitude: null,
+    longitude: null,
     latitudeDelta: zoom,
     longitudeDelta: zoom * 2,
-  }); // Coordenadas por defecto de Bogotá
+  }); // Valor inicial del zoom
 
   const [destinationMap, setDestinationMap] = React.useState({
     latitude: null,
@@ -1225,8 +1168,8 @@ function AppView({route, navigation}) {
   });
 
   const [region, setRegion] = React.useState({
-    latitude: 4.711, // Bogotá, Colombia - región inicial
-    longitude: -74.0721,
+    latitude: null,
+    longitude: null,
     latitudeDelta: zoom,
     longitudeDelta: zoom * 2,
   });
@@ -1389,17 +1332,6 @@ function AppView({route, navigation}) {
       };
     }, [appStoreUserProfile]),
   );
-
-  // Debug effect para ver el estado de los datos
-  React.useEffect(() => {
-    console.log('ModalServiceTracking state:', {
-      showContent,
-      hasApiKey: !!apiKey,
-      apiKeyValue: apiKey,
-      hasRegionLat: !!region?.latitude,
-      regionValue: region
-    });
-  }, [showContent, apiKey, region]);
 
   React.useEffect(() => {
     // revisa si tiene mensajes sin leer
@@ -2138,33 +2070,102 @@ function AppView({route, navigation}) {
             </CoreText>
             <CoreText>{JSON.stringify(destinationMap)}</CoreText>
             <CoreText>{JSON.stringify(originMap)}</CoreText> */}
-            <View >
+            <View style={{flex: 1}}>
               {apiKey && apiKey !== '' && region?.latitude ? (
-                <SimpleMapView
-                  apiKey={apiKey}
-                  region={region}
-                  destinationMap={destinationMap}
-                  originMap={originMap}
-                  technicalOrigin={technicalOrigin}
-                  onRegionChangeComplete={onRegionChangeComplete}
-                  onSetDirection={onSetDirection}
-                />
+                <>
+                  <MapView
+                    provider={PROVIDER_GOOGLE}
+                    showsUserLocation
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      paddingHorizontal: 10,
+                    }}
+                    // initialRegion={initRegion}
+                    region={region}
+                    onRegionChangeComplete={onRegionChangeComplete}>
+                    {destinationMap?.latitude ? (
+                      <>
+                        <Marker
+                          coordinate={destinationMap}
+                          draggable
+                          onDragEnd={direction => onSetDirection(direction)}
+                        />
+                      </>
+                    ) : (
+                      <></>
+                    )}
+
+                    {technicalOrigin?.latitude ? (
+                      <>
+                        <Marker coordinate={technicalOrigin}>
+                          <CoreImage
+                            style={{width: 30, height: 30}}
+                            source={require('@src/Apps/Asistec/assets/img/pngwing.com.png')}
+                          />
+                        </Marker>
+                      </>
+                    ) : (
+                      <></>
+                    )}
+
+                    {originMap?.latitude ? (
+                      <>
+                        <MapViewDirections
+                          origin={originMap}
+                          destination={destinationMap}
+                          strokeWidth={3}
+                          apikey={apiKey}
+                        />
+                      </>
+                    ) : (
+                      <></>
+                    )}
+                  </MapView>
+                  {/* <View
+                    style={{
+                      position: 'absolute',
+                      top: 16,
+                      justifyContent: 'center', // Centra horizontalmente
+                      alignItems: 'center', // Centra verticalmente (opcional)
+                      width: '100%', // Opcional: para ocupar todo el ancho
+                    }}>
+                    <TouchableOpacity
+                      // onPress={setMarkerCurrentLocation}
+                      style={{
+                        flexDirection: 'row', // Alinea el icono y el texto en una fila
+                        alignItems: 'center', // Centra verticalmente
+                        padding: 5,
+                        paddingHorizontal: 15,
+                        borderWidth: 1,
+                        borderRadius: 10,
+                        borderColor: 'orange',
+                        backgroundColor: 'orange',
+                        shadowColor: '#000', // Color de la sombra
+                        shadowOffset: {width: 0, height: 2}, // Dirección y distancia de la sombra
+                        shadowOpacity: 0.25, // Opacidad de la sombra
+                        shadowRadius: 3.84, // Radio del blur de la sombra
+                        elevation: 5, // Elevación en Android para aplicar sombra
+                      }}>
+                      <CoreIconMaterial
+                        name="my-location"
+                        size={20}
+                        color="#fff"
+                      />
+                      <Text
+                        style={{
+                          padding: 8,
+                          fontWeight: 'bold',
+                          color: '#fff',
+                        }}>
+                        Centrar vista
+                      </Text>
+                    </TouchableOpacity>
+                  </View> */}
+                </>
               ) : (
-                <View style={{
-                  flex: 1,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  backgroundColor: '#f5f5f5'
-                }}>
-                  <ActivityIndicator size="large" color="#0000ff" />
-                  <CoreText>API Key: {apiKey ? 'OK' : 'Missing'}</CoreText>
-                  <CoreText>Region: {region?.latitude ? 'OK' : 'Missing'}</CoreText>
-                  <CoreText>Lat: {region?.latitude}</CoreText>
-                  <CoreText>Lng: {region?.longitude}</CoreText>
-                </View>
+                <></>
               )}
-              
-              {/* Código comentado para centrar vista - conservado para referencia futura */}
               <Pressable
                 style={{
                   position: 'absolute',
@@ -2176,7 +2177,7 @@ function AppView({route, navigation}) {
                 onPress={() => onModalUsersInfo(serviceData?.technical_id)}>
                 <Avatar.Image
                   size={60}
-                  source={require('@src/assets/img/operator_avatar.png')}
+                  source={require('@src/Apps/Asistec/assets/img/operator_avatar.png')}
                   style={{
                     backgroundColor: themeData?.colors.primary,
                     elevation: 5,
@@ -2191,7 +2192,7 @@ function AppView({route, navigation}) {
                   width: '100%',
                   alignItems: 'flex-end',
                 }}>
-                {apiKey && apiKey !== '' && region?.latitude != null ? (
+                {apiKey && apiKey !== '' && region?.latitude ? (
                   <>
                     <View
                       style={{
@@ -2479,9 +2480,8 @@ function AppView({route, navigation}) {
             onDismiss={() => setOpenModalUsersInfo(false)}
             visible={openModalUsersInfo}
             style={{borderRadius: 46, padding: 0, margin: 0}}>
-            <View
+            <ImageBackground
               style={{
-                backgroundColor: 'white',
                 alignItems: 'center',
                 padding: 0,
                 paddingTop: 5,
@@ -2489,7 +2489,11 @@ function AppView({route, navigation}) {
                 paddingBottom: 0,
                 width: '100%',
                 borderRadius: 46,
-              }}>
+              }}
+              imageStyle={{
+                borderRadius: 46,
+              }}
+              source={require('@src/Apps/Asistec/assets/img/user_info_card_bg.png')}>
               <View style={{margin: 0, padding: 0}}>
                 <Card
                   style={{
@@ -2500,7 +2504,7 @@ function AppView({route, navigation}) {
                   mode="contained">
                   <CoreImage
                     style={{width: 80, height: 80}}
-                    source={require('@src/assets/img/cropped-Logo-PNG.png')}
+                    source={require('@src/Apps/Asistec/assets/img/cropped-Logo-PNG.png')}
                   />
                 </Card>
               </View>
@@ -2522,28 +2526,16 @@ function AppView({route, navigation}) {
                   source={
                     modalUserInfoData?.photo_url
                       ? {uri: modalUserInfoData?.photo_url}
-                      : require('@src/assets/img/operator_avatar.png')
+                      : require('@src/Apps/Asistec/assets/img/operator_avatar.png')
                   }
                   style={{backgroundColor: themeData.colors.primary}}
                 />
               </View>
-              <CoreImage
-                style={{
-                  // top: '25%',
-                  width: '100%',
-                  height: '100%',
-                  position: 'absolute',
-                  zIndex: -1,
-                  borderRadius: 46, // La mitad del tamaño total para que sea un círculo
-                }}
-                source={require('@src/assets/img/user_info_card_bg.png')}
-              />
               <View
                 style={{
                   alignItems: 'center',
                   marginTop: 20,
                   padding: 0,
-                  // backgroundColor: 'white',
                   width: '100%',
                 }}>
                 <CoreText variant="titleLarge" style={{padding: 0, margin: 0}}>
@@ -2576,23 +2568,7 @@ function AppView({route, navigation}) {
                     : ''}
                 </CoreText>
               </View>
-              {/* <View
-                style={{
-                  margin: 0,
-                  padding: 0,
-                  marginTop: 10,
-                  paddingTop: 10,
-                  paddingBottom: 10,
-                  alignItems: 'center',
-                  width: '100%',
-                  backgroundColor: themeData.colors.primary,
-                  borderRadius: 30,
-                }}>
-                <CoreText variant="titleMedium" style={{color: 'white'}}>
-                  TECNICO SUSPERVISOR
-                </CoreText>
-              </View> */}
-            </View>
+            </ImageBackground>
           </Dialog>
         </Portal>
 

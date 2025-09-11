@@ -14,21 +14,19 @@ import {
   CoreText,
   CoreTextInput,
   CoreImage,
-  AppLayout,
   CoreIconMaterialCommunity,
   CoreBottomSheet,
 } from '@src/components/';
 import {IconButton, List} from 'react-native-paper';
 import AppConfig from '@src/app.config';
-const asistecData = AppConfig.asistec_data;
-
+import AppLayout from '@src/Apps/Asistec/components/AppLayout';
 import {
   convertTimestamp,
   ServiceOrderModel,
   ServiceOrderMediaModel,
   ServiceOrderActaModel,
   ServiceOrderAdmTechDeliveyModel,
-} from '@src/utils/firebase/firestore';
+} from '@src/Apps/Asistec/utils/firebase/firestore';
 import {cropText} from '@src/utils/formaters';
 import {useFocusEffect} from '@react-navigation/native';
 import {useCoreTheme} from '@src/themes';
@@ -37,6 +35,8 @@ import {BottomSheetTextInput} from '@gorhom/bottom-sheet';
 import uuid from 'react-native-uuid';
 import SignatureScreen from 'react-native-signature-canvas';
 import {useNavigation} from '@react-navigation/native';
+
+const asistecData = AppConfig.asistec_data;
 
 const ListActions = React.memo(
   React.forwardRef(({item, loading, onSaveItem, onAction}, ref) => {
@@ -480,7 +480,7 @@ function AppView({route, navigation}) {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      source={require('@src/assets/img/cropped-Logo-PNG.png')}
+                      source={require('@src/Apps/Asistec/assets/img/cropped-Logo-PNG.png')}
                     />
                   </View>
                 </View>
@@ -510,7 +510,7 @@ function AppView({route, navigation}) {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
-                      source={require('@src/assets/img/sample_signature.png')}
+                      source={require('@src/Apps/Asistec/assets/img/sample_signature.png')}
                     />
                     <View
                       style={{
@@ -551,7 +551,7 @@ function AppView({route, navigation}) {
                                 ? {
                                     uri: serviceDeliveryData?.signature_b64_tech,
                                   }
-                                : require('@src/assets/img/image-remove.png')
+                                : require('@src/Apps/Asistec/assets/img/image-remove.png')
                             }
                           />
                         </Pressable>

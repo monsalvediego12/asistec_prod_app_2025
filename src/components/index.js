@@ -8,10 +8,8 @@ import CoreLayout from './CoreLayout';
 import CoreIconMaterial from './CoreIconMaterial';
 import KeyboardAvoidingView from './KeyboardAvoidingView';
 import CoreIconMaterialCommunity from './CoreIconMaterialCommunity';
-import AppLayout from './AppLayout';
 import CoreBottomSheetModal from './CoreBottomSheetModal';
 import CoreBottomSheet from './CoreBottomSheet';
-import AsistecPickLocation from './AsistecPickLocation';
 import CoreImageModal from './CoreImageModal';
 
 export {
@@ -26,8 +24,6 @@ export {
   CoreIconMaterial,
   KeyboardAvoidingView,
   CoreIconMaterialCommunity,
-  AppLayout,
   CoreBottomSheetModal,
   CoreBottomSheet,
-  AsistecPickLocation,
 };

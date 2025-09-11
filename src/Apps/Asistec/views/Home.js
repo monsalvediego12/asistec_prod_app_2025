@@ -15,7 +15,6 @@ import {
   CoreTextInput,
   CoreHelperText,
   CoreImage,
-  AppLayout,
 } from '@src/components/';
 import {Card, Avatar} from 'react-native-paper';
 import {useAppStore} from '@src/store';
@@ -25,31 +24,32 @@ import {
   ServiceModel,
   requestUserPermissionMessaging,
   registerUserDeviceFCM,
-} from '@src/utils/firebase/firestore';
+} from '@src/Apps/Asistec/utils/firebase/firestore';
 import {useCoreComponents} from '@src/components/CoreComponentsProvider';
 import NavigationService from '@src/navigation/NavigationService';
 import {useSelector, useDispatch} from 'react-redux';
-import {setFiltersListServicesOrderView} from '@src/redux/slice/appSlice';
+import {setFiltersListServicesOrderView} from '@src/Apps/Asistec/store/redux/slice/appSlice';
+import AppLayout from '@src/Apps/Asistec/components/AppLayout';
 
 const getLocalImgService = item => {
   if (item?.code) {
     if (item.code === 'JARDINERIA') {
-      return require('@src/assets/img/jardineria_service_card.png');
+      return require('@src/Apps/Asistec/assets/img/jardineria_service_card.png');
     }
     if (item.code === 'VIDRERIA') {
-      return require('@src/assets/img/vidreria_service_card.png');
+      return require('@src/Apps/Asistec/assets/img/vidreria_service_card.png');
     }
     if (item.code === 'GASNATURAL') {
-      return require('@src/assets/img/gas_natural_service_card.png');
+      return require('@src/Apps/Asistec/assets/img/gas_natural_service_card.png');
     }
     if (item.code === 'PLOMERIA') {
-      return require('@src/assets/img/plomeria_service_card.png');
+      return require('@src/Apps/Asistec/assets/img/plomeria_service_card.png');
     }
     if (item.code === 'ELECTRICIDAD') {
-      return require('@src/assets/img/electricidad_service_card.png');
+      return require('@src/Apps/Asistec/assets/img/electricidad_service_card.png');
     }
   }
-  return require('@src/assets/img/image-remove.png');
+  return require('@src/Apps/Asistec/assets/img/image-remove.png');
 };
 
 function IndexView({navigation}) {
@@ -129,7 +129,7 @@ function IndexView({navigation}) {
               style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
               <CoreImage
                 style={{height: 130, width: 100}}
-                source={require('@src/assets/img/home_card_img_1.png')}
+                source={require('@src/Apps/Asistec/assets/img/home_card_img_1.png')}
               />
             </View>
             <View style={{flex: 2, paddingTop: 10}}>

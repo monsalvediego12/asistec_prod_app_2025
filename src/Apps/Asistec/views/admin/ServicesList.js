@@ -10,9 +10,8 @@ import {useCoreTheme} from '@src/themes';
 import {
   convertTimestamp,
   ServiceOrderModel,
-} from '@src/utils/firebase/firestore';
+} from '@src/Apps/Asistec/utils/firebase/firestore';
 import {
-  AppLayout,
   CoreText,
   CoreButton,
   CoreIconMaterial,
@@ -25,6 +24,7 @@ import {useAppStore, appStoreUserProfile} from '@src/store';
 import NavigationService from '@src/navigation/NavigationService';
 
 import {useSelector, useDispatch} from 'react-redux';
+import AppLayout from '@src/Apps/Asistec/components/AppLayout';
 
 function IndexView({route, navigation}) {
   const {themeData} = useCoreTheme();

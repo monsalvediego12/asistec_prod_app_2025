@@ -2,9 +2,8 @@ import React from 'react';
 import {View, ScrollView, ActivityIndicator} from 'react-native';
 import {FAB, List, Divider, Searchbar, IconButton} from 'react-native-paper';
 import {useCoreTheme} from '@src/themes';
-import {UserModel} from '@src/utils/firebase/firestore';
+import {UserModel} from '@src/Apps/Asistec/utils/firebase/firestore';
 import {
-  AppLayout,
   CoreText,
   CoreButton,
   CoreIconMaterial,
@@ -12,6 +11,7 @@ import {
 import {formatearNumeroTelefono} from '@src/utils/formaters';
 import {useFocusEffect} from '@react-navigation/native';
 import {useAppStore} from '@src/store';
+import AppLayout from '@src/Apps/Asistec/components/AppLayout';
 
 function IndexView({navigation}) {
   const {themeData} = useCoreTheme();

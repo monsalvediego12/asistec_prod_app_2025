@@ -1,6 +1,6 @@
-import {UIStore} from './store';
+import {UIStore} from '@src/store/store';
 
-import {UserProfileInterface} from '@src/utils/firebase/firestore';
+import {UserProfileInterface} from '@src/Apps/Asistec/utils/firebase/firestore';
 
 const defaultFilters = {
   date_type: 1, // 1 today, 2 custom

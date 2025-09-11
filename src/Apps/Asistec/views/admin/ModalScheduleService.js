@@ -7,7 +7,6 @@ import {
   Pressable,
   TouchableOpacity,
   Platform,
-  Keyboard,
 } from 'react-native';
 import {
   CoreButton,
@@ -19,8 +18,6 @@ import {
   CoreIconMaterial,
   CoreBottomSheetModal,
   CoreBottomSheet,
-  AsistecPickLocation,
-  AppLayout,
 } from '@src/components/';
 import {Switch, List, Divider, Searchbar, IconButton} from 'react-native-paper';
 import {useCoreReactHookForm} from '@src/hooks/CoreReactHookForm';
@@ -35,7 +32,7 @@ import {
   getStorageApp,
   NotificationsLogsModel,
   CitiesConfigModel,
-} from '@src/utils/firebase/firestore';
+} from '@src/Apps/Asistec/utils/firebase/firestore';
 import {useFocusEffect} from '@react-navigation/native';
 import {useCoreTheme} from '@src/themes';
 import DatePicker from 'react-native-date-picker';
@@ -48,9 +45,12 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {useAppStore} from '@src/store';
 import NavigationService from '@src/navigation/NavigationService';
 import AppConfig from '@src/app.config';
-const asistecData = AppConfig.asistec_data;
 
 import {BottomSheetTextInput} from '@gorhom/bottom-sheet';
+import AppLayout from '@src/Apps/Asistec/components/AppLayout';
+import AsistecPickLocation from '@src/Apps/Asistec/components/AsistecPickLocation';
+
+const asistecData = AppConfig.asistec_data;
 
 const ContentList = React.memo(
   ({items = [], loading, type, onSelect, onClose, onSearch}) => {
@@ -190,66 +190,10 @@ function AppView({route, navigation}) {
   const params = route.params;
   const {themeData} = useCoreTheme();
   const {appStoreUserProfile} = useAppStore();
-  
-  // Navegar usando NavigationService para ser consistente
-  const goBack = () => {
-    // Fallback según el origen como FiltersServices
-    if (params?.service) {
-      // Si viene editando un servicio, volver a tracking
-      NavigationService.navigate({
-        name: 'ModalServiceTracking',
-        params: {service: params.service}
-      });
-    } else {
-      // Si viene creando nuevo, volver a la lista
-      NavigationService.navigate({name: 'AdminServicesListView'});
-    }
-  };
-
-  // Manejo del teclado para scroll automático
-  React.useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      () => setKeyboardVisible(true)
-    );
-    const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
-      () => setKeyboardVisible(false)
-    );
-
-    return () => {
-      keyboardDidShowListener?.remove();
-      keyboardDidHideListener?.remove();
-    };
-  }, []);
-
-  // Función para hacer scroll suave para TextInputs en la parte media-final
-  const scrollToInput = (inputRef) => {
-    setTimeout(() => {
-      if (scrollViewRef.current) {
-        // Hacer scroll más suave, solo lo necesario para mostrar el input
-        scrollViewRef.current.scrollTo({ y: 400, animated: true });
-      }
-    }, 100);
-  };
-
-  // Función específica para el TextInput de observaciones (que está al final)
-  const scrollToBottom = () => {
-    setTimeout(() => {
-      scrollViewRef.current?.scrollToEnd({ animated: true });
-    }, 100);
-  };
-
-  // Función vacía para TextInputs que no necesitan scroll
-  const noScroll = () => {
-    // No hacer nada - para inputs en la parte superior
-  };
 
   const {useForm, Controller, setRules} = useCoreReactHookForm();
 
   const [showContent, setShowContent] = React.useState(false);
-  const [keyboardVisible, setKeyboardVisible] = React.useState(false);
-  const scrollViewRef = React.useRef(null);
 
   const [userData, setUserData] = React.useState(null);
   const [serviceData, setServiceData] = React.useState(null);
@@ -945,17 +889,11 @@ function AppView({route, navigation}) {
             onSelect={onSelectItemBottomSheet}
           />
         }> */}
-        <ScrollView 
-          ref={scrollViewRef}
-          contentContainerStyle={{ paddingBottom: keyboardVisible ? 300 : 50 }}
-          showsVerticalScrollIndicator={false}>
+        <ScrollView>
           {showContent ? (
             <>
-              <KeyboardAvoidingView 
-                style={{flex: 1}}
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
               <View style={{paddingHorizontal: 10}}>
+                <KeyboardAvoidingView>
                   <View>
                     <Pressable
                       onPress={() => openModal('service')}
@@ -1065,7 +1003,6 @@ function AppView({route, navigation}) {
                       style={{marginTop: 10}}
                       value={reciverFullName}
                       onChangeText={setReciverFullName}
-                      onFocus={noScroll}
                       label="Nombre completo de Quien recibe"
                       mode="outlined"
                       dense
@@ -1074,7 +1011,6 @@ function AppView({route, navigation}) {
                       style={{marginTop: 10}}
                       value={reciverPhone}
                       onChangeText={setReciverPhone}
-                      onFocus={noScroll}
                       label="Telefono de Quien recibe"
                       mode="outlined"
                       keyboardType="phone-pad"
@@ -1254,7 +1190,6 @@ function AppView({route, navigation}) {
                             description: val,
                           });
                         }}
-                        onFocus={scrollToBottom}
                         label="Observaciones"
                         mode="outlined"
                         style={{
@@ -1263,8 +1198,8 @@ function AppView({route, navigation}) {
                       />
                     </View>
                   </View>
+                </KeyboardAvoidingView>
               </View>
-              </KeyboardAvoidingView>
             </>
           ) : (
             <View
@@ -1292,7 +1227,7 @@ function AppView({route, navigation}) {
               mode="contained"
               buttonColor={themeData.colors.asistectSec}
               // textColor={themeData.colors.asistectSec}
-              onPress={goBack}
+              onPress={() => navigation.goBack()}
               dense>
               Cerrar
             </CoreButton>

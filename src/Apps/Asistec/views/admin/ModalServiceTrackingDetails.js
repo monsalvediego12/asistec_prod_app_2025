@@ -18,7 +18,6 @@ import {
   CoreImageModal,
   CoreIconMaterialCommunity,
   CoreBottomSheet,
-  AppLayout,
 } from '@src/components/';
 import {
   Chip,
@@ -34,7 +33,7 @@ import {
   convertTimestamp,
   ServiceOrderCotizacionModel,
   NotificationsLogsModel,
-} from '@src/utils/firebase/firestore';
+} from '@src/Apps/Asistec/utils/firebase/firestore';
 import {useFocusEffect} from '@react-navigation/native';
 import {useCoreTheme} from '@src/themes';
 import DatePicker from 'react-native-date-picker';
@@ -48,6 +47,7 @@ import uuid from 'react-native-uuid';
 import {cropText, formatPrice} from '@src/utils/formaters';
 import firestore from '@react-native-firebase/firestore';
 import functions from '@react-native-firebase/functions';
+import AppLayout from '@src/Apps/Asistec/components/AppLayout';
 
 import AppConfig from '@src/app.config';
 
@@ -567,7 +567,7 @@ const FormInfoPayment = React.memo(
                 props.style,
                 {resizeMode: 'contain', width: 50, height: 50},
               ]}
-              source={require('@src/assets/img/nequi_logo.png')}
+              source={require('@src/Apps/Asistec/assets/img/nequi_logo.png')}
             />
           )}
         />
@@ -580,7 +580,7 @@ const FormInfoPayment = React.memo(
                 props.style,
                 {resizeMode: 'contain', width: 50, height: 50, borderRadius: 5},
               ]}
-              source={require('@src/assets/img/daviplata_logo.png')}
+              source={require('@src/Apps/Asistec/assets/img/daviplata_logo.png')}
             />
           )}
         />
@@ -599,7 +599,7 @@ const FormInfoPayment = React.memo(
                   backgroundColor: '#000',
                 },
               ]}
-              source={require('@src/assets/img/bancolombia_logo.png')}
+              source={require('@src/Apps/Asistec/assets/img/bancolombia_logo.png')}
             />
           )}
         />

@@ -15,7 +15,6 @@ import {
   CoreTextInput,
   CoreImage,
   CoreImageModal,
-  AppLayout,
   CoreIconMaterialCommunity,
   CoreBottomSheet,
 } from '@src/components/';
@@ -29,7 +28,7 @@ import {
   ServiceOrderMediaModel,
   ServiceOrderActaModel,
   ServiceOrderCotizacionModel,
-} from '@src/utils/firebase/firestore';
+} from '@src/Apps/Asistec/utils/firebase/firestore';
 import {cropText, formatPrice} from '@src/utils/formaters';
 import {useFocusEffect} from '@react-navigation/native';
 import {useCoreTheme} from '@src/themes';
@@ -38,6 +37,7 @@ import {BottomSheetTextInput} from '@gorhom/bottom-sheet';
 import uuid from 'react-native-uuid';
 import SignatureScreen from 'react-native-signature-canvas';
 import firestore from '@react-native-firebase/firestore';
+import AppLayout from '@src/Apps/Asistec/components/AppLayout';
 
 const ListActions = React.memo(
   React.forwardRef(({item, loading, onSaveItem, onAction}, ref) => {
@@ -607,7 +607,7 @@ function AppView({route, navigation}) {
                           alignItems: 'center',
                           justifyContent: 'center',
                         }}
-                        source={require('@src/assets/img/cropped-Logo-PNG.png')}
+                        source={require('@src/Apps/Asistec/assets/img/cropped-Logo-PNG.png')}
                       />
                     </View>
                   </View>
@@ -956,7 +956,7 @@ function AppView({route, navigation}) {
                           alignItems: 'center',
                           justifyContent: 'center',
                         }}
-                        source={require('@src/assets/img/sample_signature.png')}
+                        source={require('@src/Apps/Asistec/assets/img/sample_signature.png')}
                       />
                       <View
                         style={{

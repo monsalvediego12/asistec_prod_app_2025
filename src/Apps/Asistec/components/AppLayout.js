@@ -79,7 +79,7 @@ const AppCobrarLayout = React.forwardRef(
       <View
         style={{
           flex: 1,
-          backgroundColor: 'transparent',
+          backgroundColor: themeData.colors.background,
         }}>
         <View style={{flex: 1}}>
           {loadingConf?.state ? (

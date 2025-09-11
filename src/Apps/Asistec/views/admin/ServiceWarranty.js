@@ -3,7 +3,6 @@ import {View, ScrollView, ActivityIndicator} from 'react-native';
 import {List, Divider, Checkbox, Avatar, Switch} from 'react-native-paper';
 import {useCoreTheme} from '@src/themes';
 import {
-  AppLayout,
   CoreText,
   CoreButton,
   CoreTextInput,
@@ -14,10 +13,11 @@ import {
   ServiceOrderModel,
   convertTimestamp,
   NotificationsLogsModel,
-} from '@src/utils/firebase/firestore';
+} from '@src/Apps/Asistec/utils/firebase/firestore';
 import {cropText} from '@src/utils/formaters';
 import {useAppStore} from '@src/store';
 import appConfig from '@src/app.config';
+import AppLayout from '@src/Apps/Asistec/components/AppLayout';
 
 function IndexView({route, navigation}) {
   const params = route.params;
@@ -184,7 +184,7 @@ function IndexView({route, navigation}) {
                       alignItems: 'center',
                       justifyContent: 'center',
                     }}
-                    source={require('@src/assets/img/cropped-Logo-PNG.png')}
+                    source={require('@src/Apps/Asistec/assets/img/cropped-Logo-PNG.png')}
                   />
                 </View>
               </View>

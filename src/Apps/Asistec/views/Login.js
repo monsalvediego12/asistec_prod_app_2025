@@ -9,7 +9,6 @@ import {
   CoreTextInput,
   CoreHelperText,
   CoreImage,
-  AppLayout,
 } from '@src/components/';
 import {useCoreReactHookForm} from '@src/hooks/CoreReactHookForm';
 
@@ -20,6 +19,7 @@ import {useCoreTheme} from '@src/themes';
 // import auth from '@react-native-firebase/auth';
 import auth, { getAuth, onAuthStateChanged, signInWithPhoneNumber } from '@react-native-firebase/auth';
 import {useAppStore} from '@src/store';
+import AppLayout from '@src/Apps/Asistec/components/AppLayout';
 
 function LoginView({navigation}) {
   const {useForm, Controller, setRules} = useCoreReactHookForm();
@@ -128,7 +128,7 @@ function LoginView({navigation}) {
           }}>
           <CoreImage
             style={{width: 150, height: 150, alignItems: 'center'}}
-            source={require('@src/assets/img/cropped-Logo-PNG.png')}
+            source={require('@src/Apps/Asistec/assets/img/cropped-Logo-PNG.png')}
           />
         </View>
         <CoreText

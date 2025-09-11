@@ -14,16 +14,14 @@ import {
   CoreButton,
   CoreText,
   CoreTextInput,
-  AppLayout,
   CoreBottomSheet,
-  AsistecPickLocation,
   CoreIconMaterialCommunity,
   CoreIconMaterial,
 } from '@src/components/';
 import {Chip, Dialog, Avatar, Badge, IconButton} from 'react-native-paper';
 import {useCoreComponents} from '@src/components/CoreComponentsProvider';
 import {useCoreTheme} from '@src/themes';
-import {UserModel, getStorageApp} from '@src/utils/firebase/firestore';
+import {UserModel, getStorageApp} from '@src/Apps/Asistec/utils/firebase/firestore';
 import firestore from '@react-native-firebase/firestore';
 import NavigationService from '@src/navigation/NavigationService';
 import {useFocusEffect} from '@react-navigation/native';
@@ -32,6 +30,8 @@ import {FAB, Portal, Text} from 'react-native-paper';
 import auth from '@react-native-firebase/auth';
 import AppConfig from '@src/app.config';
 import {launchImageLibrary} from 'react-native-image-picker';
+import AppLayout from '@src/Apps/Asistec/components/AppLayout';
+import AsistecPickLocation from '@src/Apps/Asistec/components/AsistecPickLocation';
 
 const asistecData = AppConfig.asistec_data;
 
@@ -311,7 +311,7 @@ function AppCobrarCustomerProfileView({navigation}) {
                     source={
                       photoUrl
                         ? {uri: photoUrl}
-                        : require('@src/assets/img/operator_avatar.png')
+                        : require('@src/Apps/Asistec/assets/img/operator_avatar.png')
                     }
                     style={{backgroundColor: themeData?.colors.primary}}
                     onTouchEnd={chooseImage}

@@ -1,5 +1,5 @@
 import {configureStore, combineReducers} from '@reduxjs/toolkit';
-import appReducer from './slice/appSlice';
+import appReducer from '@src/Apps/Asistec/store/redux/slice/appSlice';
 
 // Los combinamos todos en un solo reducer
 const rootReducer = combineReducers({

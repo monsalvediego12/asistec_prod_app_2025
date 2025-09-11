@@ -10,15 +10,16 @@ import {
   CoreText,
   CoreTextInput,
   CoreHelperText,
-  AppLayout,
   CoreIconMaterialCommunity,
 } from '@src/components/';
 import {Switch, List, Portal, Dialog} from 'react-native-paper';
 import {useCoreReactHookForm} from '@src/hooks/CoreReactHookForm';
 import {useCoreComponents} from '@src/components/CoreComponentsProvider';
-import {UserModel} from '@src/utils/firebase/firestore';
-import {DarkTheme, useFocusEffect} from '@react-navigation/native';
+import {UserModel} from '@src/Apps/Asistec/utils/firebase/firestore';
+import {useFocusEffect} from '@react-navigation/native';
 import {useCoreTheme} from '@src/themes';
+import NavigationService from '@src/navigation/NavigationService';
+import AppLayout from '@src/Apps/Asistec/components/AppLayout';
 
 function AppView({route, navigation}) {
   const params = route.params;
@@ -52,7 +53,7 @@ function AppView({route, navigation}) {
 
   useFocusEffect(
     React.useCallback(() => {
-      initContent();
+      // initContent();
       setForm();
       return () => {
         setShowContent(false);
@@ -63,12 +64,12 @@ function AppView({route, navigation}) {
     }, [params]),
   );
 
-  const initContent = () => {
-    const timeout = setTimeout(() => {
-      // setShowContent(true);
-    }, 100);
-    return () => clearTimeout(timeout);
-  };
+  // const initContent = () => {
+  //   const timeout = setTimeout(() => {
+  //     // setShowContent(true);
+  //   }, 100);
+  //   return () => clearTimeout(timeout);
+  // };
 
   const setForm = async () => {
     let userProfile = null;
@@ -132,14 +133,14 @@ function AppView({route, navigation}) {
       });
     } else {
       phone = '+57' + phone;
-      data = await UserModel.createUserProfile({
+      data = await UserModel.createCustomerProfile({
         full_name,
         email,
         phone,
         address,
         is_active: isActive,
       });
-      navigation.navigate({name: 'AdminUsersView'});
+      navigation.navigate({name: 'AdminCustomersView'});
     }
 
     if (!data) {
@@ -150,6 +151,7 @@ function AppView({route, navigation}) {
       });
     } else {
       layoutRef?.current?.setSnack({state: true, message: 'Correcto!'});
+      // NavigationService.goBack();
     }
     layoutRef?.current?.setLoading({state: false});
   };
@@ -174,7 +176,7 @@ function AppView({route, navigation}) {
       });
     } else {
       layoutRef?.current?.setSnack({state: true, message: 'Correcto!'});
-      navigation.navigate({name: 'AdminUsersView'});
+      navigation.navigate({name: 'AdminCustomersView'});
     }
     layoutRef?.current?.setLoading({state: false});
   };

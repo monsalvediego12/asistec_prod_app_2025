@@ -22,9 +22,8 @@ import {
   convertTimestampToDate,
   convertTimestamp,
   NotificationsLogsModel,
-} from '@src/utils/firebase/firestore';
+} from '@src/Apps/Asistec/utils/firebase/firestore';
 import {
-  AppLayout,
   CoreText,
   CoreButton,
   CoreIconMaterialCommunity,
@@ -36,6 +35,7 @@ import {useAppStore} from '@src/store';
 import AppConfig from '@src/app.config';
 import {DateTime} from 'luxon';
 import NavigationService from '@src/navigation/NavigationService';
+import AppLayout from '@src/Apps/Asistec/components/AppLayout';
 
 const groupNotificationsByDate = notifications => {
   // Crear un objeto para almacenar las notificaciones agrupadas

@@ -1,16 +1,16 @@
 import React from 'react';
-import {View, TouchableOpacity} from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import {
   DrawerContentScrollView,
 } from '@react-navigation/drawer';
-import {List, Divider} from 'react-native-paper';
+import { List, Divider } from 'react-native-paper';
 import {
   CoreText,
   CoreButton,
   CoreImage,
   CoreIconMaterial,
 } from '@src/components/';
-import {useCoreTheme} from '@src/themes';
+import { useCoreTheme } from '@src/themes';
 import firestore from '@react-native-firebase/firestore';
 import AppConfig from '@src/app.config';
 import ContactModalContent from './ContactModalContent';
@@ -24,13 +24,13 @@ interface AsistecDrawerContentProps {
 }
 
 const AsistecDrawerContent = ({
-  navigation, 
-  appSetLoader, 
-  appStoreUserProfile, 
+  navigation,
+  appSetLoader,
+  appStoreUserProfile,
   onLogout,
   ...props
 }: AsistecDrawerContentProps) => {
-  const {themeData} = useCoreTheme();
+  const { themeData } = useCoreTheme();
   const [modalContact, setModalContact] = React.useState(false);
 
   // Test
@@ -73,8 +73,8 @@ const AsistecDrawerContent = ({
 
   return (
     <>
-      <DrawerContentScrollView {...props} contentContainerStyle={{flex: 1}}>
-        <View style={{flex: 1}}>
+      <DrawerContentScrollView {...props} contentContainerStyle={{ flex: 1, paddingBottom: 0, }}>
+        <View style={{ flex: 1 }}>
           {/* {__DEV__ ? (
             <List.Item
               onPress={() => delRegDb()}
@@ -93,8 +93,8 @@ const AsistecDrawerContent = ({
               paddingTop: 30,
             }}>
             <CoreImage
-              style={{width: 150, height: 150, alignItems: 'center'}}
-              source={require('@src/assets/img/cropped-Logo-PNG.png')}
+              style={{ width: 150, height: 150, alignItems: 'center' }}
+              source={require('@src/Apps/Asistec/assets/img/cropped-Logo-PNG.png')}
             />
           </View>
 
@@ -140,7 +140,7 @@ const AsistecDrawerContent = ({
 
           </List.Section>
         </View>
-        <View style={{paddingHorizontal: 10}}>
+        <View style={{ paddingHorizontal: 10, marginTop: 40 }}>
           <CoreButton
             mode="contained"
             buttonColor={themeData.colors.asistectSec}
@@ -158,21 +158,22 @@ const AsistecDrawerContent = ({
             }}
             style={{
               marginVertical: 5,
+              backgroundColor: themeData.colors.primary
             }}>
             Información
           </CoreButton>
         </View>
-        <View style={{marginVertical: 5, alignItems: 'center'}}>
-          <CoreText style={{fontSize: 12}}>Asistec 2024</CoreText>
-          <CoreText style={{fontSize: 10}}>
+        <View style={{ marginVertical: 5, alignItems: 'center', marginBottom: 20 }}>
+          <CoreText style={{ fontSize: 12 }}>Asistec 2024</CoreText>
+          <CoreText style={{ fontSize: 10 }}>
             V {AppConfig?.version || '0'}
           </CoreText>
         </View>
       </DrawerContentScrollView>
 
-      <ContactModalContent 
-        visible={modalContact} 
-        onDismiss={() => setModalContact(false)} 
+      <ContactModalContent
+        visible={modalContact}
+        onDismiss={() => setModalContact(false)}
         navigation={navigation}
         themeData={themeData}
       />

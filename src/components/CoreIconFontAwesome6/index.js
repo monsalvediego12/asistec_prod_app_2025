@@ -7,9 +7,6 @@ const coreIconMaterial = ({...props}) => {
     <MaterialIcon
       color={themeData?.colors?.outline || '#000'}
       {...props}
-      //   name={'menu'}
-      //   size={24}
-      //   onPress={navigation.toggleDrawer}
     />
   );
 };

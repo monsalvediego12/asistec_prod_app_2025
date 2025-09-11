@@ -10,15 +10,15 @@ import {
   CoreText,
   CoreTextInput,
   CoreHelperText,
-  AppLayout,
 } from '@src/components/';
 import {Switch, List} from 'react-native-paper';
 import {useCoreReactHookForm} from '@src/hooks/CoreReactHookForm';
 import {useCoreComponents} from '@src/components/CoreComponentsProvider';
-import {ServiceModel} from '@src/utils/firebase/firestore';
+import {ServiceModel} from '@src/Apps/Asistec/utils/firebase/firestore';
 import {useFocusEffect} from '@react-navigation/native';
 import {useNavigationBack} from '@src/hooks/useNavigationBack';
 import {useCoreTheme} from '@src/themes';
+import AppLayout from '@src/Apps/Asistec/components/AppLayout';
 
 function AppView({route, navigation}) {
   const params = route.params;

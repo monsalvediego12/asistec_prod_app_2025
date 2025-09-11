@@ -10,7 +10,6 @@ import {
   CoreButton,
   CoreText,
   CoreTextInput,
-  AppLayout,
   CoreBottomSheet,
   CoreIconMaterial,
 } from '@src/components/';
@@ -29,12 +28,13 @@ import {
   UserModel,
   ServiceOrderModel,
   CitiesConfigModel,
-} from '@src/utils/firebase/firestore';
+} from '@src/Apps/Asistec/utils/firebase/firestore';
 import {useAppStore, appStoreUserProfile} from '@src/store';
 import NavigationService from '@src/navigation/NavigationService';
 import {useSelector, useDispatch} from 'react-redux';
-import {setFiltersListServicesOrderView} from '@src/redux/slice/appSlice';
+import {setFiltersListServicesOrderView} from '@src/Apps/Asistec/store/redux/slice/appSlice';
 import {BottomSheetTextInput} from '@gorhom/bottom-sheet';
+import AppLayout from '@src/Apps/Asistec/components/AppLayout';
 
 const ContentList = React.memo(
   ({items = [], loading, type, onSelect, onClose, onSearch}) => {

@@ -30,27 +30,27 @@ export default {
     region_text: 'Bogotá, Colombia',
     services_config: {
       DEFAULT: {
-        home_img: require('@src/assets/img/image-remove.png'),
+        home_img: require('@src/Apps/Asistec/assets/img/image-remove.png'),
         consecutive_prefix: '',
       },
       JARDINERIA: {
-        home_img: require('@src/assets/img/jardineria_service_card.png'),
+        home_img: require('@src/Apps/Asistec/assets/img/jardineria_service_card.png'),
         consecutive_prefix: 'J',
       },
       VIDRERIA: {
-        home_img: require('@src/assets/img/vidreria_service_card.png'),
+        home_img: require('@src/Apps/Asistec/assets/img/vidreria_service_card.png'),
         consecutive_prefix: 'V',
       },
       GASNATURAL: {
-        home_img: require('@src/assets/img/gas_natural_service_card.png'),
+        home_img: require('@src/Apps/Asistec/assets/img/gas_natural_service_card.png'),
         consecutive_prefix: 'G',
       },
       PLOMERIA: {
-        home_img: require('@src/assets/img/plomeria_service_card.png'),
+        home_img: require('@src/Apps/Asistec/assets/img/plomeria_service_card.png'),
         consecutive_prefix: 'P',
       },
       ELECTRICIDAD: {
-        home_img: require('@src/assets/img/electricidad_service_card.png'),
+        home_img: require('@src/Apps/Asistec/assets/img/electricidad_service_card.png'),
         consecutive_prefix: 'E',
       },
     },
