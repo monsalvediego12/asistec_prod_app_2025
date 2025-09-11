@@ -36,7 +36,7 @@ import {useAppStore} from '@src/store';
 import {BottomSheetTextInput} from '@gorhom/bottom-sheet';
 import uuid from 'react-native-uuid';
 import SignatureScreen from 'react-native-signature-canvas';
-import NavigationService from '@src/navigation/NavigationService';
+import {useNavigation} from '@react-navigation/native';
 
 const ListActions = React.memo(
   React.forwardRef(({item, loading, onSaveItem, onAction}, ref) => {
@@ -181,6 +181,17 @@ function AppView({route, navigation}) {
   const {appStoreUserProfile} = useAppStore();
 
   const {themeData} = useCoreTheme();
+
+  // Navegar usando NavigationService para ser consistente
+  const goBack = () => {
+    // Ir siempre a ModalServiceTracking con el service_id correcto
+    NavigationService.navigate({
+      name: 'ModalServiceTracking',
+      params: {
+        service: {id: params?.service_order_id}
+      }
+    });
+  };
 
   const layoutRef = React.useRef(null);
   const bottomSheetFormObs = React.useRef(null);
@@ -405,7 +416,12 @@ function AppView({route, navigation}) {
       state: 11,
     });
     layoutRef?.current?.setLoading({state: false});
-    NavigationService.goBack();
+    NavigationService.navigate({
+      name: 'ModalServiceTracking',
+      params: {
+        service: {id: params?.service_order_id}
+      }
+    });
   };
 
   return (
@@ -576,12 +592,9 @@ function AppView({route, navigation}) {
                     style={{marginTop: 20}}
                     mode="contained"
                     onPress={() =>
-                      NavigationService.navigate({
-                        name: 'ModalServiceTrackingDetails',
-                        params: {
-                          goBackView: 'ModalServiceOrderEntregaAdminTech',
-                          service: serviceData,
-                        },
+                      navigation.navigate('ModalServiceTrackingDetails', {
+                        goBackView: 'ModalServiceOrderEntregaAdminTech',
+                        service: serviceData,
                       })
                     }
                     contentStyle={{

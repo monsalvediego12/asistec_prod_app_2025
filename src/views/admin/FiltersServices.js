@@ -17,7 +17,7 @@ import {
 import {Chip, List, Divider, IconButton} from 'react-native-paper';
 import {ScrollView} from 'react-native-gesture-handler';
 
-import {useFocusEffect} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {useCoreTheme} from '@src/themes';
 import DatePicker from 'react-native-date-picker';
 import {core_print_date} from '@src/utils/core_dates';
@@ -249,6 +249,11 @@ function AppView({route, navigation}) {
     setFilters({...filters, state_order: state});
   };
 
+  // Usar NavigationService para ser consistente con el resto de la app
+  const goBack = () => {
+    NavigationService.navigate({name: 'AdminServicesListView'});
+  };
+
   useFocusEffect(
     React.useCallback(() => {
       setForm();
@@ -352,9 +357,8 @@ function AppView({route, navigation}) {
         date_type: filters.date_type,
       }),
     );
-    NavigationService.navigate({
-      name: 'AdminServicesListView',
-    });
+    // Navegar específicamente a AdminServicesListView después de aplicar filtros
+    NavigationService.navigate({name: 'AdminServicesListView'});
   };
   const onSearchList = async queryText => {
     let data;
@@ -637,7 +641,7 @@ function AppView({route, navigation}) {
               <CoreButton
                 mode="contained"
                 buttonColor={themeData.colors.asistectSec}
-                onPress={() => navigation.goBack()}>
+                onPress={goBack}>
                 Cerrar
               </CoreButton>
             </View>

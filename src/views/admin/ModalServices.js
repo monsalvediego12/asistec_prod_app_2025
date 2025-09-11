@@ -17,11 +17,17 @@ import {useCoreReactHookForm} from '@src/hooks/CoreReactHookForm';
 import {useCoreComponents} from '@src/components/CoreComponentsProvider';
 import {ServiceModel} from '@src/utils/firebase/firestore';
 import {useFocusEffect} from '@react-navigation/native';
+import {useNavigationBack} from '@src/hooks/useNavigationBack';
 import {useCoreTheme} from '@src/themes';
 
 function AppView({route, navigation}) {
   const params = route.params;
   const {themeData} = useCoreTheme();
+  
+  // Hook personalizado para manejar navegación hacia atrás
+  const {goBack} = useNavigationBack({
+    fallbackRoute: 'AdminServicesView',
+  });
 
   const {useForm, Controller, setRules} = useCoreReactHookForm();
   const layoutRef = React.useRef(null);
@@ -96,7 +102,7 @@ function AppView({route, navigation}) {
         code,
         is_active: isActive,
       });
-      navigation.goBack();
+      goBack();
     }
 
     if (!data) {
@@ -305,7 +311,7 @@ function AppView({route, navigation}) {
           <CoreButton
             mode="contained"
             buttonColor={themeData.colors.asistectSec}
-            onPress={() => navigation.goBack()}>
+            onPress={goBack}>
             Cerrar
           </CoreButton>
         </View>

@@ -4,3 +4,5 @@
 0.1.2 Ajustes y primera version iOS
 05-08-2024
 0.1.3 Se agregaron textos de descripcion en los permisos, se corrige error cuando se intentaba tomar un foto y ocurria algo inesperado.
+09-09-2025
+0.1.10 Se migra version de react native, notificacion anual google cloud run

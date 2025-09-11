@@ -8,6 +8,7 @@ import {
   Dimensions,
   Linking,
   Platform,
+  TouchableOpacity,
 } from 'react-native';
 import {
   CoreButton,
@@ -17,6 +18,7 @@ import {
   CoreBottomSheet,
   AsistecPickLocation,
   CoreIconMaterialCommunity,
+  CoreIconMaterial,
 } from '@src/components/';
 import {Chip, Dialog, Avatar, Badge, IconButton} from 'react-native-paper';
 import {useCoreComponents} from '@src/components/CoreComponentsProvider';
@@ -314,24 +316,27 @@ function AppCobrarCustomerProfileView({navigation}) {
                     style={{backgroundColor: themeData?.colors.primary}}
                     onTouchEnd={chooseImage}
                   />
-                  <Badge
-                    size={30}
+                  <TouchableOpacity
+                    onPress={chooseImage}
                     style={{
                       position: 'absolute',
                       bottom: 0,
                       right: 0,
-                      backgroundColor: '#fff',
+                      width: 30,
+                      height: 30,
+                      backgroundColor: themeData.colors.primary,
                       borderRadius: 15,
-                      borderWidth: 1,
-                      borderColor: '#ccc',
+                      borderWidth: 2,
+                      borderColor: '#fff',
+                      justifyContent: 'center',
+                      alignItems: 'center',
                     }}>
-                    <IconButton
-                      icon="camera"
-                      size={18}
-                      onPress={chooseImage}
-                      style={{margin: -5}}
+                    <CoreIconMaterial 
+                      name="camera-alt" 
+                      size={16} 
+                      color="#fff" 
                     />
-                  </Badge>
+                  </TouchableOpacity>
                 </View>
               </View>
               <View

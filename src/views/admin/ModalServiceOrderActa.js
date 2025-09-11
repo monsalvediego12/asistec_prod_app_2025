@@ -182,6 +182,17 @@ function AppView({route, navigation}) {
   const {appStoreUserProfile} = useAppStore();
 
   const {themeData} = useCoreTheme();
+  
+  // Navegar usando NavigationService para ser consistente
+  const goBack = () => {
+    // Ir siempre a ModalServiceTrackingDetails con el service_id correcto
+    NavigationService.navigate({
+      name: 'ModalServiceTrackingDetails',
+      params: {
+        service: {id: params?.service_order_id}
+      }
+    });
+  };
 
   const layoutRef = React.useRef(null);
   const bottomSheetFormObs = React.useRef(null);
@@ -519,7 +530,7 @@ function AppView({route, navigation}) {
       return;
     }
     await saveServiceActaChanges({...serviceActaData, state: 3});
-    navigation.goBack();
+    goBack();
   };
   const onRejectActa = async () => {
     if (
@@ -534,7 +545,7 @@ function AppView({route, navigation}) {
       return;
     }
     await saveServiceActaChanges({...serviceActaData, state: 2});
-    navigation.goBack();
+    goBack();
   };
 
   const totalCot = () => {

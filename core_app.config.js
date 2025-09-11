@@ -1,6 +1,6 @@
 export default {
   name: 'App',
-  version: '0.1.8',
+  version: '0.1.10',
   is_dev: false, //__DEV__, Siempre debe ser DEV !!! se setea true para generar apk y revisar algunas cosas del panel DEV
   show_dev_menu: false, // Estando __DEV__ puede mostrar u ocultar el panel dev
   email_test: __DEV__ ? 'user1@test.com' : '',

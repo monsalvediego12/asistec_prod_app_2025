@@ -56,10 +56,12 @@ cd android && ./gradlew signingReport
 
 cd android &&./gradlew clean
 
+apk
 cd android && ./gradlew assembleRelease
 
 yarn react-native-version --never-amend
 
+aab
 npx react-native build-android --mode=release
 
 Xcode, Product -> Clean build, Build, Archive - Window -> Organizer
