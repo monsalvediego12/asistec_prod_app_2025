@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import {defaultTheme, testTheme, asistecTheme} from './styles/';
+import {defaultTheme, testTheme} from './styles/';
+import { asistecTheme } from '@src/Apps/Asistec/themes/styles';
 
 const ThemeContext = React.createContext({});
 

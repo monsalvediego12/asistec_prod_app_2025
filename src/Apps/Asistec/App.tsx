@@ -186,6 +186,9 @@ const AppNavigation = () => {
           headerStatusBarHeight: 0,
           headerStyle: {
             paddingTop: 0,
+          },
+          drawerStyle: {
+            width: 280,
           }
         }}>
         <Drawer.Group>

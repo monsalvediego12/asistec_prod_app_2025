@@ -73,7 +73,7 @@ const AsistecDrawerContent = ({
 
   return (
     <>
-      <DrawerContentScrollView {...props} contentContainerStyle={{ flex: 1, paddingBottom: 0, }}>
+      <DrawerContentScrollView {...props} contentContainerStyle={{ flex: 1, paddingBottom: 0 }}>
         <View style={{ flex: 1 }}>
           {/* {__DEV__ ? (
             <List.Item
