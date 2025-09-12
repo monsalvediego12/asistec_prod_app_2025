@@ -501,6 +501,12 @@ function AppView({route, navigation}) {
     setBottomSheetType(null);
   };
 
+  const sendNotificationIfEnabled = (notificationData) => {
+    if (AppConfig?.active_notifications) {
+      NotificationsLogsModel.saveLogNotification(notificationData);
+    }
+  };
+
   const onSave = async () => {
     let dataSend = {
       service: {
@@ -665,7 +671,7 @@ function AppView({route, navigation}) {
           if (appStoreUserProfile?.type === 1) {
             // notificacion a tecnico/tecnicos
             if (order?.technical_id && order?.technical_id !== '') {
-              NotificationsLogsModel.saveLogNotification({
+              sendNotificationIfEnabled({
                 data: {
                   from_user_id: appStoreUserProfile?.id || null,
                   to_user_id: order?.technical_id,
@@ -678,7 +684,7 @@ function AppView({route, navigation}) {
                 },
               });
             } else {
-              NotificationsLogsModel.saveLogNotification({
+              sendNotificationIfEnabled({
                 data: {
                   from_user_id: appStoreUserProfile?.id || null,
                   message: `Servicio ${order?.service?.name || '-'} #${
@@ -693,7 +699,7 @@ function AppView({route, navigation}) {
             }
             // notificacion a cliente
             if (order?.customer_id && order?.customer_id !== '') {
-              NotificationsLogsModel.saveLogNotification({
+              sendNotificationIfEnabled({
                 data: {
                   from_user_id: appStoreUserProfile?.id || null,
                   to_user_id: order?.customer_id,
@@ -709,7 +715,7 @@ function AppView({route, navigation}) {
           // tecnico crea orden
           if (appStoreUserProfile?.type === 2) {
             // notificacion a admins
-            NotificationsLogsModel.saveLogNotification({
+            sendNotificationIfEnabled({
               data: {
                 from_user_id: appStoreUserProfile?.id || null,
                 message: `Servicio ${order?.service?.name || '-'} #${
@@ -722,7 +728,7 @@ function AppView({route, navigation}) {
             });
             // notificacion a cliente
             if (order?.customer_id && order?.customer_id !== '') {
-              NotificationsLogsModel.saveLogNotification({
+              sendNotificationIfEnabled({
                 data: {
                   from_user_id: appStoreUserProfile?.id || null,
                   to_user_id: order?.customer_id,
@@ -739,7 +745,7 @@ function AppView({route, navigation}) {
           // cliente crea orden
           if (appStoreUserProfile?.type === 3) {
             // notificacion a admins
-            NotificationsLogsModel.saveLogNotification({
+            sendNotificationIfEnabled({
               data: {
                 from_user_id: appStoreUserProfile?.id || null,
                 message: `Servicio ${order?.service?.name || '-'} #${
@@ -752,7 +758,7 @@ function AppView({route, navigation}) {
             });
             // notificacion a tecnico/tecnicos
             if (order?.technical_id && order?.technical_id !== '') {
-              NotificationsLogsModel.saveLogNotification({
+              sendNotificationIfEnabled({
                 data: {
                   from_user_id: appStoreUserProfile?.id || null,
                   to_user_id: order?.technical_id,
@@ -765,7 +771,7 @@ function AppView({route, navigation}) {
                 },
               });
             } else {
-              NotificationsLogsModel.saveLogNotification({
+              sendNotificationIfEnabled({
                 data: {
                   from_user_id: appStoreUserProfile?.id || null,
                   message: `Servicio ${order?.service?.name || '-'} #${
@@ -783,7 +789,7 @@ function AppView({route, navigation}) {
         if (!(!params?.service?.id || params?.service?.id === '')) {
           if (onHabilitar) {
             // notificacion a admins
-            NotificationsLogsModel.saveLogNotification({
+            sendNotificationIfEnabled({
               data: {
                 from_user_id: appStoreUserProfile?.id || null,
                 message: `Servicio ${order?.service?.name || '-'} #${
@@ -796,7 +802,7 @@ function AppView({route, navigation}) {
               to_user_type: 1,
             });
             if (serviceData?.technical_id && serviceData?.technical_id !== '') {
-              NotificationsLogsModel.saveLogNotification({
+              sendNotificationIfEnabled({
                 data: {
                   from_user_id: appStoreUserProfile?.id || null,
                   message: `Servicio ${order?.service?.name || '-'} #${

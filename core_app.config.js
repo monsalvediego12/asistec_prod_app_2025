@@ -16,6 +16,7 @@ export default {
     'https://wgauh5fsj3.execute-api.us-east-2.amazonaws.com/v1/customers/v-app/',
   aws_app_token:
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsaWNlbnNlIjoxfQ.1A49nfGkf2wiW5oiesK7aZ8uEb9vx6pu1mdzduU7o20',
+  active_notifications: true, // Notificaciones push
   asistec_data: {
     contact_number_1: '3013808976',
     contact_number_1_pref: '+57',

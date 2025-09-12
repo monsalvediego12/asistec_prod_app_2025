@@ -28,7 +28,7 @@ import {
 } from '@src/Apps/Asistec/utils/firebase/firestore';
 import {cropText} from '@src/utils/formaters';
 import {useAppStore} from '@src/store';
-import appConfig from '@src/app.config';
+import AppConfig from '@src/app.config';
 import uuid from 'react-native-uuid';
 import NavigationService from '@src/navigation/NavigationService';
 import AppLayout from '@src/Apps/Asistec/components/AppLayout';
@@ -49,6 +49,12 @@ function IndexView({route, navigation}) {
 
   const [messages, setMessages] = React.useState([]);
   const refMessageInput = React.useRef(null);
+
+  const sendNotificationIfEnabled = (notificationData) => {
+    if (AppConfig?.active_notifications) {
+      NotificationsLogsModel.saveLogNotification(notificationData);
+    }
+  };
 
   useFocusEffect(
     React.useCallback(() => {
@@ -204,39 +210,39 @@ function IndexView({route, navigation}) {
       };
       // es admin y el chat es tipo 1 envia not a cliente y tecnico
       if (appStoreUserProfile?.type === 1 && chatData?.type === 1) {
-        NotificationsLogsModel.saveLogNotification({
+        sendNotificationIfEnabled({
           ...dataNot,
           data: {...dataNot?.data, to_user_id: serviceData?.customer_id},
         });
-        NotificationsLogsModel.saveLogNotification({
+        sendNotificationIfEnabled({
           ...dataNot,
           data: {...dataNot?.data, to_user_id: serviceData?.technical_id},
         });
       }
       // es tecnico y el chat es tipo 1 envia not a cliente
       if (appStoreUserProfile?.type === 2 && chatData?.type === 1) {
-        NotificationsLogsModel.saveLogNotification({
+        sendNotificationIfEnabled({
           ...dataNot,
           data: {...dataNot?.data, to_user_id: serviceData?.customer_id},
         });
       }
       // es cliente y el chat es tipo 1 envia not a tecnico
       if (appStoreUserProfile?.type === 3 && chatData?.type === 1) {
-        NotificationsLogsModel.saveLogNotification({
+        sendNotificationIfEnabled({
           ...dataNot,
           data: {...dataNot?.data, to_user_id: serviceData?.technical_id},
         });
       }
       // admin envia mensaje al tecnico de la orden, chat tipo 2
       if (appStoreUserProfile?.type === 1 && chatData?.type === 2) {
-        NotificationsLogsModel.saveLogNotification({
+        sendNotificationIfEnabled({
           ...dataNot,
           data: {...dataNot?.data, to_user_id: serviceData?.technical_id},
         });
       }
       // tecnico envia mensaje a los admin de la orden, chat tipo 2
       if (appStoreUserProfile?.type === 2 && chatData?.type === 2) {
-        NotificationsLogsModel.saveLogNotification({
+        sendNotificationIfEnabled({
           ...dataNot,
           to_user_type: 1,
           data: {

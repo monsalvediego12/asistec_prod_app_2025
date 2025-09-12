@@ -1576,7 +1576,7 @@ function AppView({route, navigation}) {
     if (response) {
       // notificacion a admins
       if (response?.technical_id && response?.technical_id !== '') {
-        NotificationsLogsModel.saveLogNotification({
+        sendNotificationIfEnabled({
           data: {
             from_user_id: appStoreUserProfile?.id || null,
             message: `Servicio ${response?.service?.name || '-'} #${
@@ -1631,7 +1631,7 @@ function AppView({route, navigation}) {
         to_user_type: 1,
       });
       if (serviceData?.technical_id && serviceData?.technical_id !== '') {
-        NotificationsLogsModel.saveLogNotification({
+        sendNotificationIfEnabled({
           data: {
             from_user_id: appStoreUserProfile?.id || null,
             message: `Servicio ${response?.service?.name || '-'} #${
@@ -1716,7 +1716,7 @@ function AppView({route, navigation}) {
     layoutRef?.current?.setLoading({state: false});
     if (response) {
       if (appStoreUserProfile?.id === serviceData?.customer_id) {
-        NotificationsLogsModel.saveLogNotification({
+        sendNotificationIfEnabled({
           data: {
             from_user_id: appStoreUserProfile?.id || null,
             message: `Servicio ${response?.service?.name || '-'} #${
@@ -1729,7 +1729,7 @@ function AppView({route, navigation}) {
           },
           to_user_type: 1,
         });
-        NotificationsLogsModel.saveLogNotification({
+        sendNotificationIfEnabled({
           data: {
             from_user_id: appStoreUserProfile?.id || null,
             message: `Servicio ${response?.service?.name || '-'} #${
@@ -1744,7 +1744,7 @@ function AppView({route, navigation}) {
         });
       }
       if (appStoreUserProfile?.type === 1) {
-        NotificationsLogsModel.saveLogNotification({
+        sendNotificationIfEnabled({
           data: {
             from_user_id: appStoreUserProfile?.id || null,
             message: `Servicio ${response?.service?.name || '-'} #${
@@ -1757,7 +1757,7 @@ function AppView({route, navigation}) {
             payload: {service_order_id: response.id},
           },
         });
-        NotificationsLogsModel.saveLogNotification({
+        sendNotificationIfEnabled({
           data: {
             from_user_id: appStoreUserProfile?.id || null,
             message: `Servicio ${response?.service?.name || '-'} #${
@@ -1842,6 +1842,12 @@ function AppView({route, navigation}) {
     setExternalMapModal(true);
   };
 
+  const sendNotificationIfEnabled = (notificationData) => {
+    if (AppConfig?.active_notifications) {
+      NotificationsLogsModel.saveLogNotification(notificationData);
+    }
+  };
+
   const changeStateOrder = async () => {
     let state = 0;
     let order;
@@ -1906,7 +1912,7 @@ function AppView({route, navigation}) {
 
       if (state === 3) {
         // notificacion a admins
-        NotificationsLogsModel.saveLogNotification({
+        sendNotificationIfEnabled({
           data: {
             from_user_id: appStoreUserProfile?.id || null,
             message: `Servicio ${serviceData?.service?.name || '-'} #${
@@ -1923,7 +1929,7 @@ function AppView({route, navigation}) {
         });
         // notificacion a customer
         if (serviceData?.customer_id && serviceData?.customer_id !== '') {
-          NotificationsLogsModel.saveLogNotification({
+          sendNotificationIfEnabled({
             data: {
               from_user_id: appStoreUserProfile?.id || null,
               to_user_id: serviceData?.customer_id,
@@ -1940,7 +1946,7 @@ function AppView({route, navigation}) {
       }
       if (state === 4) {
         // notificacion a admins
-        NotificationsLogsModel.saveLogNotification({
+        sendNotificationIfEnabled({
           data: {
             from_user_id: appStoreUserProfile?.id || null,
             message: `Servicio ${serviceData?.service?.name || '-'} #${
@@ -1955,7 +1961,7 @@ function AppView({route, navigation}) {
         });
         // notificacion a customer
         if (serviceData?.customer_id && serviceData?.customer_id !== '') {
-          NotificationsLogsModel.saveLogNotification({
+          sendNotificationIfEnabled({
             data: {
               from_user_id: appStoreUserProfile?.id || null,
               to_user_id: serviceData?.customer_id,
@@ -1997,7 +2003,7 @@ function AppView({route, navigation}) {
     if (response) {
       if (state === 2) {
         // notificacion admins
-        NotificationsLogsModel.saveLogNotification({
+        sendNotificationIfEnabled({
           data: {
             from_user_id: appStoreUserProfile?.id || null,
             message: `Servicio ${response?.service?.name || '-'} #${
@@ -2015,7 +2021,7 @@ function AppView({route, navigation}) {
       }
       if (state === 3) {
         // notificacion admins
-        NotificationsLogsModel.saveLogNotification({
+        sendNotificationIfEnabled({
           data: {
             from_user_id: appStoreUserProfile?.id || null,
             message: `Servicio ${response?.service?.name || '-'} #${

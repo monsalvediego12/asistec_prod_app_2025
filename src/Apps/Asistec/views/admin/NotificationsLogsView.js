@@ -104,6 +104,12 @@ function IndexView({navigation}) {
 
   const {appStoreUserProfile, appStoreUserNotifications} = useAppStore();
 
+  const sendNotificationIfEnabled = (notificationData) => {
+    if (AppConfig?.active_notifications) {
+      NotificationsLogsModel.saveLogNotification(notificationData);
+    }
+  };
+
   useFocusEffect(
     React.useCallback(() => {
       setView();
@@ -318,7 +324,7 @@ function IndexView({navigation}) {
       <View style={{flex: 1, paddingHorizontal: 5}}>
         {/* <CoreButton
           onPress={() =>
-            NotificationsLogsModel.saveLogNotification({
+            sendNotificationIfEnabled({
               data: {to_user_id: appStoreUserProfile?.id},
             })
           }>

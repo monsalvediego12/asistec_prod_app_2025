@@ -16,7 +16,7 @@ import {
 } from '@src/Apps/Asistec/utils/firebase/firestore';
 import {cropText} from '@src/utils/formaters';
 import {useAppStore} from '@src/store';
-import appConfig from '@src/app.config';
+import AppConfig from '@src/app.config';
 import AppLayout from '@src/Apps/Asistec/components/AppLayout';
 
 function IndexView({route, navigation}) {
@@ -48,6 +48,12 @@ function IndexView({route, navigation}) {
     }
     setServiceData(service);
     setShowContent(true);
+  };
+
+  const sendNotificationIfEnabled = (notificationData) => {
+    if (AppConfig?.active_notifications) {
+      NotificationsLogsModel.saveLogNotification(notificationData);
+    }
   };
 
   const saveWarranty = async () => {
@@ -89,14 +95,14 @@ function IndexView({route, navigation}) {
       if (appStoreUserProfile?.type === 1) {
         // not a cliente
         if (serviceData?.customer_id && serviceData?.customer_id !== '') {
-          NotificationsLogsModel.saveLogNotification({
+          sendNotificationIfEnabled({
             ...dataNot,
             to_user_id: serviceData?.customer_id,
           });
         }
         // not a tecnico
         if (serviceData?.technical_id && serviceData?.technical_id !== '') {
-          NotificationsLogsModel.saveLogNotification({
+          sendNotificationIfEnabled({
             ...dataNot,
             to_user_id: serviceData?.technical_id,
           });
@@ -106,13 +112,13 @@ function IndexView({route, navigation}) {
       // NOTIFICACION -> el cliente solicita garantia, notifica a los administradores y al tecnico
       if (serviceData?.customer_id === appStoreUserProfile?.id) {
         // not administradores
-        NotificationsLogsModel.saveLogNotification({
+        sendNotificationIfEnabled({
           ...dataNot,
           to_user_type: 1,
         });
         // not a tecnico
         if (serviceData?.technical_id && serviceData?.technical_id !== '') {
-          NotificationsLogsModel.saveLogNotification({
+          sendNotificationIfEnabled({
             ...dataNot,
             to_user_id: serviceData?.technical_id,
           });
@@ -154,7 +160,7 @@ function IndexView({route, navigation}) {
                     value={`${
                       convertTimestamp(serviceData?.date, 'dd-MM-yyyy') || '-'
                     } - ${
-                      appConfig?.asistec_data?.services_order_book_times?.find(
+                      AppConfig?.asistec_data?.services_order_book_times?.find(
                         x => x.id === serviceData?.hour,
                       )?.name || ''
                     }`}
