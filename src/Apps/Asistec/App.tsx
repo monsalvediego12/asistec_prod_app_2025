@@ -791,11 +791,14 @@ function AppNavigator() {
       });
 
       if (remoteMessage?.notification) {
-        notifee.displayNotification({
+        console.log('remoteMessage?.notification', remoteMessage);
+        const notificationPayload: any = {
           title: remoteMessage?.notification?.title || '',
           body: remoteMessage?.notification?.body || '',
           data: { ...remoteMessage?.data },
           android: {
+            smallIcon: 'ic_small_icon',
+            color: '#006a63ff',
             channelId: channelId,
             importance: AndroidImportance.HIGH, // Asegura que la importancia sea alta
             // Para forzar que aparezca como heads-up (emergente):
@@ -803,7 +806,18 @@ function AppNavigator() {
               id: 'default',
             },
           },
-        });
+        }
+        if (remoteMessage?.data?.type === 'yearly_reminder') {
+          notificationPayload.android.actions = [
+            {
+              title: 'Agendar',
+              pressAction: {
+                id: 'default',
+              },
+            },
+          ]
+        }
+        notifee.displayNotification(notificationPayload);
       }
     });
 
@@ -817,9 +831,13 @@ function AppNavigator() {
   // onNotificationOpenedApp: App abierta pero minimizada y se pulsa la notificacion
   useEffect(() => {
     const unsubscribe = messaging().onNotificationOpenedApp(remoteMessage => {
-      // console.log(' messaging().onNotificationOpenedApp', remoteMessage);
+      console.log(' messaging().onNotificationOpenedApp', remoteMessage);
       if (remoteMessage) {
-        handleNotification(1, { notification: remoteMessage });
+        if (remoteMessage?.data?.type === 'yearly_reminder') {
+          handleNotification('yearly_reminder', { notification: remoteMessage });
+        } else {
+          handleNotification(1, { notification: remoteMessage });
+        }
       }
     });
     return unsubscribe;
@@ -905,8 +923,11 @@ function AppNavigator() {
   };
 
   const handleNotification = (type: any, data: any) => {
-    // console.log('handleNotification', type, data);
+    console.log('handleNotification', type, data);
     switch (type) {
+      case 'yearly_reminder':
+        NavigationService.navigate({ name: 'AdminScheduleServicesModal' });
+        break;
       case EventType.DISMISSED:
         // console.log('User dismissed notification', data);
         break;
