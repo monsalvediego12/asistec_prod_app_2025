@@ -1,12 +1,14 @@
 import * as React from 'react';
 import {
-  // ScrollView,
+  ScrollView,
   View,
   KeyboardAvoidingView,
   ActivityIndicator,
   Pressable,
   TouchableOpacity,
   Platform,
+  Keyboard,
+  Dimensions,
 } from 'react-native';
 import {
   CoreButton,
@@ -22,7 +24,7 @@ import {
 import {Switch, List, Divider, Searchbar, IconButton} from 'react-native-paper';
 import {useCoreReactHookForm} from '@src/hooks/CoreReactHookForm';
 import {useCoreComponents} from '@src/components/CoreComponentsProvider';
-import {ScrollView} from 'react-native-gesture-handler';
+import {ScrollView as GestureHandlerScrollView} from 'react-native-gesture-handler';
 import {
   ServiceModel,
   UserModel,
@@ -111,7 +113,7 @@ const ContentList = React.memo(
           </View>
         ) : (
           <View style={{flex: 1, paddingTop: 20}}>
-            <ScrollView style={{flex: 1}}>
+            <GestureHandlerScrollView style={{flex: 1}}>
               {type === 'customer' ||
               type === 'technical' ||
               type === 'city' ? (
@@ -177,7 +179,7 @@ const ContentList = React.memo(
                   <Divider />
                 </View>
               ))}
-            </ScrollView>
+            </GestureHandlerScrollView>
           </View>
         )}
       </View>
@@ -229,11 +231,14 @@ function AppView({route, navigation}) {
   const [itemsBottomSheet, setItemsBottomSheet] = React.useState([]);
 
   const [bottomSheetType, setBottomSheetType] = React.useState(null);
+  const [keyboardHeight, setKeyboardHeight] = React.useState(0);
+  const [keyboardVisible, setKeyboardVisible] = React.useState(false);
 
   const layoutRef = React.useRef(null);
   const coreBottomSheetRef = React.useRef(null);
   const bottomSheetRefLocation = React.useRef(null);
   const asistecPickLocationRef = React.useRef(null);
+  const scrollViewRef = React.useRef(null);
 
   const openBottomSheet = async () => {
     coreBottomSheetRef.current.open();
@@ -267,6 +272,28 @@ function AppView({route, navigation}) {
       };
     }, [params]),
   );
+
+  React.useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      (e) => {
+        setKeyboardHeight(e.endCoordinates.height);
+        setKeyboardVisible(true);
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardHeight(0);
+        setKeyboardVisible(false);
+      }
+    );
+
+    return () => {
+      keyboardDidHideListener?.remove();
+      keyboardDidShowListener?.remove();
+    };
+  }, []);
 
   const setServiceDataFnt = async () => {
     const service = await ServiceOrderModel.getServiceOrderById(
@@ -874,6 +901,14 @@ function AppView({route, navigation}) {
     setLoadingList(false);
   };
 
+  const handleInputFocus = () => {
+    setTimeout(() => {
+      if (scrollViewRef.current) {
+        scrollViewRef.current.scrollToEnd({ animated: true });
+      }
+    }, 100);
+  };
+
   return (
     <>
       <AppLayout ref={layoutRef} hiddenBottomBarMenu>
@@ -889,12 +924,18 @@ function AppView({route, navigation}) {
             onSelect={onSelectItemBottomSheet}
           />
         }> */}
-        <ScrollView>
+        <ScrollView 
+          ref={scrollViewRef}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            flexGrow: 1, 
+            paddingBottom: keyboardVisible ? keyboardHeight + 20 : 60
+          }}>
           {showContent ? (
             <>
-              <View style={{paddingHorizontal: 10}}>
-                <KeyboardAvoidingView>
-                  <View>
+              <View style={{paddingHorizontal: 10, flex: 1}}>
+                <View>
                     <Pressable
                       onPress={() => openModal('service')}
                       style={{marginTop: 10}}>
@@ -984,6 +1025,7 @@ function AppView({route, navigation}) {
                     </Pressable>
                     <CoreTextInput
                       multiline
+                      numberOfLines={3}
                       label="Ref. adicionales ubicacion"
                       mode="outlined"
                       value={
@@ -993,6 +1035,7 @@ function AppView({route, navigation}) {
                         //   : locAddressRef || ''
                       }
                       onChangeText={setLocAddressRef}
+                      onFocus={handleInputFocus}
                       style={{
                         marginTop: 10,
                         backgroundColor: 'transparent',
@@ -1138,7 +1181,7 @@ function AppView({route, navigation}) {
                       style={{
                         marginTop: 10,
                       }}>
-                      <ScrollView
+                      <GestureHandlerScrollView
                         horizontal={true}
                         style={{
                           flexDirection: 'row',
@@ -1150,14 +1193,14 @@ function AppView({route, navigation}) {
                             {renderFileUri(img)}
                           </View>
                         ))}
-                      </ScrollView>
+                      </GestureHandlerScrollView>
                     </View>
 
                     <View
                       style={{
                         marginTop: 10,
                       }}>
-                      <ScrollView
+                      <GestureHandlerScrollView
                         horizontal={true}
                         style={{
                           flexDirection: 'row',
@@ -1169,7 +1212,7 @@ function AppView({route, navigation}) {
                             {renderFileUriBook(img)}
                           </View>
                         ))}
-                      </ScrollView>
+                      </GestureHandlerScrollView>
                     </View>
 
                     <View
@@ -1183,6 +1226,7 @@ function AppView({route, navigation}) {
                       </CoreText>
                       <CoreTextInput
                         multiline
+                        numberOfLines={4}
                         value={mediaBook?.description}
                         onChangeText={val => {
                           setMediaBook({
@@ -1190,6 +1234,7 @@ function AppView({route, navigation}) {
                             description: val,
                           });
                         }}
+                        onFocus={handleInputFocus}
                         label="Observaciones"
                         mode="outlined"
                         style={{
@@ -1197,8 +1242,7 @@ function AppView({route, navigation}) {
                         }}
                       />
                     </View>
-                  </View>
-                </KeyboardAvoidingView>
+                </View>
               </View>
             </>
           ) : (

@@ -9,6 +9,7 @@ import {
   Linking,
   Platform,
   TouchableOpacity,
+  Keyboard,
 } from 'react-native';
 import {
   CoreButton,
@@ -57,8 +58,11 @@ function AppCobrarCustomerProfileView({navigation}) {
   const [photoUrl, setPhotoUrl] = React.useState('');
   const {setUserStore, setUserProfileStore} = useAppStore();
   const [modalDeleteAccount, setModalDeleteAccount] = React.useState(false);
+  const [keyboardHeight, setKeyboardHeight] = React.useState(0);
+  const [keyboardVisible, setKeyboardVisible] = React.useState(false);
 
   const layoutRef = React.useRef(null);
+  const scrollViewRef = React.useRef(null);
 
   const bottomSheetRef = React.useRef(null);
   const asistecPickLocationRef = React.useRef(null);
@@ -79,6 +83,36 @@ function AppCobrarCustomerProfileView({navigation}) {
       };
     }, []),
   );
+
+  React.useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      (e) => {
+        setKeyboardHeight(e.endCoordinates.height);
+        setKeyboardVisible(true);
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardHeight(0);
+        setKeyboardVisible(false);
+      }
+    );
+
+    return () => {
+      keyboardDidHideListener?.remove();
+      keyboardDidShowListener?.remove();
+    };
+  }, []);
+
+  const handleInputFocus = () => {
+    setTimeout(() => {
+      if (scrollViewRef.current) {
+        scrollViewRef.current.scrollToEnd({ animated: true });
+      }
+    }, 100);
+  };
 
   const setDefaultPosition = () => {
     navigator.geolocation.getCurrentPosition(
@@ -300,10 +334,17 @@ function AppCobrarCustomerProfileView({navigation}) {
 
   return (
     <AppLayout ref={layoutRef}>
-      <ScrollView style={{flex: 1}}>
+      <ScrollView 
+        ref={scrollViewRef}
+        style={{flex: 1}}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          flexGrow: 1,
+          paddingBottom: keyboardVisible ? keyboardHeight + 20 : 60
+        }}>
         {showContent ? (
           <View style={{paddingHorizontal: 10, marginBottom: 60}}>
-            <KeyboardAvoidingView style={{justifyContent: 'flex-end'}}>
               <View style={{alignItems: 'center', marginTop: 20}}>
                 <View style={{position: 'relative'}}>
                   <Avatar.Image
@@ -394,10 +435,13 @@ function AppCobrarCustomerProfileView({navigation}) {
                 </Pressable>
                 <CoreTextInput
                   dense
+                  multiline
+                  numberOfLines={3}
                   label="Ref. adicionales ubicacion"
                   mode="outlined"
                   value={locAddressRef}
                   onChangeText={setLocAddressRef}
+                  onFocus={handleInputFocus}
                   style={{backgroundColor: 'transparent', marginBottom: 10}}
                 />
                 <CoreTextInput
@@ -406,6 +450,7 @@ function AppCobrarCustomerProfileView({navigation}) {
                   mode="outlined"
                   value={email}
                   onChangeText={setEmail}
+                  onFocus={handleInputFocus}
                   style={{backgroundColor: 'transparent', marginBottom: 10}}
                 />
 
@@ -415,6 +460,7 @@ function AppCobrarCustomerProfileView({navigation}) {
                   mode="outlined"
                   value={numberDoc}
                   onChangeText={setNumberDoc}
+                  onFocus={handleInputFocus}
                   style={{backgroundColor: 'transparent', marginBottom: 10}}
                 />
 
@@ -424,10 +470,10 @@ function AppCobrarCustomerProfileView({navigation}) {
                   mode="outlined"
                   value={bloodType}
                   onChangeText={setBloodType}
+                  onFocus={handleInputFocus}
                   style={{backgroundColor: 'transparent', marginBottom: 10}}
                 />
               </View>
-            </KeyboardAvoidingView>
 
             <CoreText variant="titleMedium">¿Nesecitas ayuda?</CoreText>
             <CoreText

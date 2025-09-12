@@ -10,6 +10,8 @@ import {
   PermissionsAndroid,
   Linking,
   RefreshControl,
+  Keyboard,
+  Dimensions,
 } from 'react-native';
 import {
   CoreButton,
@@ -644,8 +646,11 @@ function AppView({route, navigation}) {
   const [itemTypeAction, setItemTypeAction] = React.useState(null);
   const [formMediaType, setFormMediaType] = React.useState(null);
   const [serviceActaData, setServiceActaData] = React.useState(null);
+  const [keyboardHeight, setKeyboardHeight] = React.useState(0);
+  const [keyboardVisible, setKeyboardVisible] = React.useState(false);
 
   const layoutRef = React.useRef(null);
+  const scrollViewRef = React.useRef(null);
   const bottomSheetFormItemCot = React.useRef(null);
   const bottomSheetFormObs = React.useRef(null);
   const formItemCotizacionRef = React.useRef(null);
@@ -867,6 +872,36 @@ function AppView({route, navigation}) {
       };
     }, [params?.service?.id]),
   );
+
+  React.useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      (e) => {
+        setKeyboardHeight(e.endCoordinates.height);
+        setKeyboardVisible(true);
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardHeight(0);
+        setKeyboardVisible(false);
+      }
+    );
+
+    return () => {
+      keyboardDidHideListener?.remove();
+      keyboardDidShowListener?.remove();
+    };
+  }, []);
+
+  const handleInputFocus = () => {
+    setTimeout(() => {
+      if (scrollViewRef.current) {
+        scrollViewRef.current.scrollToEnd({ animated: true });
+      }
+    }, 100);
+  };
 
   const requestLocationPermission = async () => {
     try {
@@ -1908,9 +1943,16 @@ function AppView({route, navigation}) {
     <>
       <AppLayout ref={layoutRef} hiddenBottomBarMenu>
         <ScrollView
+          ref={scrollViewRef}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }>
+          }
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            flexGrow: 1, 
+            paddingBottom: keyboardVisible ? keyboardHeight + 20 : 60
+          }}>
           {showContent ? (
             <>
               <View style={{paddingHorizontal: 10}}>
@@ -1955,8 +1997,7 @@ function AppView({route, navigation}) {
                 ) : (
                   <></>
                 )}
-                <KeyboardAvoidingView>
-                  <View>
+                <View>
                     <Pressable
                       // onPress={() => openModal('service')}
                       style={{marginTop: 10}}>
@@ -3423,8 +3464,7 @@ function AppView({route, navigation}) {
                     )}
 
                     {/*  */}
-                  </View>
-                </KeyboardAvoidingView>
+                </View>
                 <CoreText />
                 <CoreText />
                 <CoreText />
