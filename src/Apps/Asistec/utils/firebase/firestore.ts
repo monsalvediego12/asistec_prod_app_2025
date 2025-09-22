@@ -86,8 +86,11 @@ export interface ServiceOrderInterface {
   technical_chat_id: string | null; // chat privado, (tecnico, admin)
   city_id: string | null;
   city: object | null;
+  revision_id: string | null; // si existe un ID entonces hay una revision
   //
   is_active?: boolean | 1; // 1 activo 0 1 null, no activo
+  created_date?: string | null;
+  updated_date?: string | null;
   deleted_date?: string | null;
 }
 
@@ -978,6 +981,9 @@ class ServiceOrderModel {
         customer_state: data?.customer_state || 1,
         is_active: true,
         consecutive: consecutive, // Asignar el nuevo consecutivo
+        revision_id: null,
+        created_date: new Date(),
+        updated_date: new Date(),
       });
 
       const createdServiceOrder = await docRef.get();
@@ -1012,6 +1018,7 @@ class ServiceOrderModel {
         .doc(data.id)
         .update({
           ...data,
+          updated_date: new Date(),
         });
 
       // Obtiene los datos actualizados después de la actualización y los devuelve
