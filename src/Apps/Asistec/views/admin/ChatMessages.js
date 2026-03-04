@@ -147,16 +147,18 @@ function IndexView({route, navigation}) {
         <Card style={styles.messageCard}>
           <Card.Content>
             <CoreText style={styles.user_name}>
-              {item?.user_type === 1 ? (
+              {appStoreUserProfile?.id === item?.user_id
+                ? 'Tú'
+                : `${item?.user_type === 1 ? '(Admin)' : item?.user_type === 2 ? '(Técnico)' : ''} ${cropText(item?.user_name || '', 18)}` 
+                
+                }
+              {/* {item?.user_type === 1 ? (
                 <>
                   <CoreText style={styles.user_name}>(Admin) </CoreText>
                 </>
               ) : (
                 <></>
-              )}
-              {appStoreUserProfile?.id === item?.user_id
-                ? 'Tú'
-                : cropText(item?.user_name || '', 25)}
+              )} */}
             </CoreText>
             <CoreText>{item.message}</CoreText>
             <CoreText style={styles.date}>

@@ -35,6 +35,7 @@ import {
   convertTimestamp,
   ServiceOrderCotizacionModel,
   NotificationsLogsModel,
+  AppConfigModel,
 } from '@src/Apps/Asistec/utils/firebase/firestore';
 import {useFocusEffect} from '@react-navigation/native';
 import {useCoreTheme} from '@src/themes';
@@ -52,6 +53,7 @@ import functions from '@react-native-firebase/functions';
 import AppLayout from '@src/Apps/Asistec/components/AppLayout';
 
 import AppConfig from '@src/app.config';
+import ReactNativeBlobUtil from 'react-native-blob-util';
 
 const asistecData = AppConfig.asistec_data;
 
@@ -633,6 +635,11 @@ function AppView({route, navigation}) {
   const [serviceCotizacion, setServiceCotizacion] = React.useState(null);
   const [mediaEvidencePago, setMediaEvidencePago] = React.useState(null);
   const [mediaEvidencePago2, setMediaEvidencePago2] = React.useState(null);
+  const [appConfig, setAppConfig] = React.useState(null);
+
+  React.useEffect(() => {
+    AppConfigModel.getDefault().then(config => setAppConfig(config));
+  }, []);
   const [metodosPago, setMetodosPago] = React.useState([
     {id: 1, name: 'Efectivo'},
     {id: 2, name: 'Nequi'},
@@ -1915,6 +1922,127 @@ function AppView({route, navigation}) {
     });
   };
 
+  const onDownFileCotizacion = async () => {
+    layoutRef?.current?.setLoading({
+      state: true,
+      message: 'Obteniendo informacion del documento...',
+    });
+    await functions()
+      .httpsCallable('genPdfCotizacionServiceV1')({id: serviceData?.id})
+      .then(response => {
+        if (response?.data?.data?.url) {
+          layoutRef?.current?.setSnack({
+            state: true,
+            message: 'Abriendo documento...',
+          });
+          setTimeout(() => {
+            Linking.openURL(`${response?.data?.data?.url}`);
+          }, 2000);
+        }
+      })
+      .catch(e => {
+        console.log('e', e);
+        layoutRef?.current?.setSnack({
+          state: true,
+          message: 'Error: ' + e,
+          type: 'error',
+        });
+      });
+    layoutRef?.current?.setLoading({state: false});
+  };
+
+  const onDownFileCotizacion2 = async () => {
+    layoutRef?.current?.setLoading({
+      state: true,
+      message: 'Generando documento...',
+    });
+    await functions()
+      .httpsCallable('genPdfCotizacionServiceV2')({id: serviceData?.id})
+      .then(async response => {
+        const base64 = response?.data?.data?.base64;
+        if (!base64) {
+          layoutRef?.current?.setSnack({
+            state: true,
+            message: 'No se pudo generar el documento.',
+            type: 'error',
+          });
+          return;
+        }
+        try {
+          const fileName = `cotizacion_${serviceData?.id}.pdf`;
+          const filePath = `${ReactNativeBlobUtil.fs.dirs.CacheDir}/${fileName}`;
+          await ReactNativeBlobUtil.fs.writeFile(filePath, base64, 'base64');
+          if (Platform.OS === 'ios') {
+            await ReactNativeBlobUtil.ios.openDocument(filePath);
+          } else {
+            await ReactNativeBlobUtil.android.actionViewIntent(
+              filePath,
+              'application/pdf',
+            );
+          }
+        } catch (e) {
+          console.log('e', e);
+          layoutRef?.current?.setLoading({state: false});
+          onDownFileCotizacion();
+        }
+      })
+      .catch(e => {
+        console.log('e', e);
+        layoutRef?.current?.setSnack({
+          state: true,
+          message: 'Error: ' + e,
+          type: 'error',
+        });
+      });
+    layoutRef?.current?.setLoading({state: false});
+  };
+
+  const onDownFileActa2 = async () => {
+    layoutRef?.current?.setLoading({
+      state: true,
+      message: 'Generando documento...',
+    });
+    await functions()
+      .httpsCallable('genPdfOrdenServiceV2')({id: serviceData?.id})
+      .then(async response => {
+        const base64 = response?.data?.data?.base64;
+        if (!base64) {
+          layoutRef?.current?.setSnack({
+            state: true,
+            message: 'No se pudo generar el documento.',
+            type: 'error',
+          });
+          return;
+        }
+        try {
+          const fileName = `acta_${serviceData?.id}.pdf`;
+          const filePath = `${ReactNativeBlobUtil.fs.dirs.CacheDir}/${fileName}`;
+          await ReactNativeBlobUtil.fs.writeFile(filePath, base64, 'base64');
+          if (Platform.OS === 'ios') {
+            await ReactNativeBlobUtil.ios.openDocument(filePath);
+          } else {
+            await ReactNativeBlobUtil.android.actionViewIntent(
+              filePath,
+              'application/pdf',
+            );
+          }
+        } catch (e) {
+          console.log('e', e);
+          layoutRef?.current?.setLoading({state: false});
+          onDownFileActa();
+        }
+      })
+      .catch(e => {
+        console.log('e', e);
+        layoutRef?.current?.setSnack({
+          state: true,
+          message: 'Error: ' + e,
+          type: 'error',
+        });
+      });
+    layoutRef?.current?.setLoading({state: false});
+  };
+
   const onDownFileActa = async () => {
     layoutRef?.current?.setLoading({
       state: true,
@@ -2603,14 +2731,14 @@ function AppView({route, navigation}) {
                               marginTop: 10,
                             }}
                             variant="titleMedium">
-                            Confirmar cotizacion
+                            Estado cotizacion
                           </CoreText>
-                          <Chip style={{margin: 4}}>
+                          <Chip style={{margin: 4}} onPress={() => appConfig?.cotizacionpdf_save_in_cloud ? onDownFileCotizacion() : onDownFileCotizacion2()}>
                             {serviceCotizacion?.state === 2
                               ? 'En espera'
                               : serviceCotizacion?.state === 3
                               ? 'Aceptado'
-                              : 'Pendiente'}
+                              : 'Pendiente'} (Ver documento)
                           </Chip>
                         </View>
                       </>
@@ -3014,7 +3142,7 @@ function AppView({route, navigation}) {
                                 icon="file-download-outline"
                                 mode="contained"
                                 size={25}
-                                onPress={() => onDownFileActa()}
+                                onPress={() => appConfig?.actapdf_save_in_cloud ? onDownFileActa() : onDownFileActa2()}
                                 // onPress={() => onChatFnt(1)}
                               />
                             </>

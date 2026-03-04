@@ -241,105 +241,97 @@ function IndexView({route, navigation}) {
                   onPress={() => onSearchQuery()}
                 />
               </View>
-              {servicesCollection.map(item => (
-                <React.Fragment key={item.id}>
-                  <List.Item
-                    style={{
-                      backgroundColor:
-                        asistecData?.services_order_state?.find(
-                          x => x.id === item?.state,
-                        )?.color || '',
-                    }}
-                    onPress={() => onClickItem(item)}
-                    title={() => (
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
-                        }}>
-                        <View>
-                          <CoreText>
-                            {`${item?.service?.name || ''} #${
-                              item?.consecutive || ''
-                            }`}
+              {servicesCollection.map(item => {
+                const stateConfig = asistecData?.services_order_state?.find(
+                  x => x.id === item?.state,
+                );
+                const textColor = stateConfig?.text_color || undefined;
+                return (
+                  <React.Fragment key={item.id}>
+                    <List.Item
+                      style={{
+                        backgroundColor: stateConfig?.color || '',
+                      }}
+                      onPress={() => onClickItem(item)}
+                      title={() => (
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                          }}>
+                          <View>
+                            <CoreText style={{color: textColor}}>
+                              {`${item?.service?.name || ''} #${
+                                item?.consecutive || ''
+                              }`}
+                            </CoreText>
+                          </View>
+                          <View>
+                            {/* <CoreText>
+                              {` (${stateConfig?.name || '-'})`}
+                            </CoreText> */}
+                          </View>
+                        </View>
+                      )}
+                      description={() => (
+                        <>
+                          {appStoreUserProfile?.type === 1 ||
+                          appStoreUserProfile?.type === 2 ? (
+                            <>
+                              <CoreText style={{color: textColor}}>
+                                {item?.customer?.full_name ||
+                                  'Cliente sin asignar'}
+                              </CoreText>
+                            </>
+                          ) : (
+                            <></>
+                          )}
+
+                          {appStoreUserProfile?.type === 1 ? (
+                            <>
+                              <CoreText style={{color: textColor}}>
+                                {item?.technical?.full_name ||
+                                  'Tecnico sin asignar'}
+                              </CoreText>
+                            </>
+                          ) : (
+                            <></>
+                          )}
+
+                          <CoreText style={{color: textColor}}>
+                            {convertTimestamp(item?.date, 'dd-MM-yyyy') || '-'}{' '}
+                            {asistecData.services_order_book_times.find(
+                              x => x.id === item.hour,
+                            )?.name || '-'}
+                          </CoreText>
+                        </>
+                      )}
+                      right={props => (
+                        <View
+                          style={{
+                            flexDirection: 'column',
+                            justifyContent: 'center',
+                          }}>
+                          <List.Icon
+                            {...props}
+                            icon="chevron-right"
+                            color={textColor}
+                          />
+                          <CoreText style={{color: textColor}}>
+                            {` (${
+                              item?.state === 11 &&
+                              appStoreUserProfile?.type !== 1
+                                ? 'Finalizado'
+                                : stateConfig?.name || '-'
+                            })`}
                           </CoreText>
                         </View>
-                        <View>
-                          {/* <CoreText>
-                            {` (${
-                              asistecData?.services_order_state?.find(
-                                x => x.id === item?.state,
-                              )?.name || '-'
-                            })`}
-                          </CoreText> */}
-                        </View>
-                      </View>
-                    )}
-                    description={() => (
-                      <>
-                        {appStoreUserProfile?.type === 1 ||
-                        appStoreUserProfile?.type === 2 ? (
-                          <>
-                            <CoreText>
-                              {item?.customer?.full_name ||
-                                'Cliente sin asignar'}
-                            </CoreText>
-                          </>
-                        ) : (
-                          <></>
-                        )}
-
-                        {appStoreUserProfile?.type === 1 ? (
-                          <>
-                            <CoreText>
-                              {item?.technical?.full_name ||
-                                'Tecnico sin asignar'}
-                            </CoreText>
-                          </>
-                        ) : (
-                          <></>
-                        )}
-
-                        <CoreText>
-                          {convertTimestamp(item?.date, 'dd-MM-yyyy') || '-'}{' '}
-                          {asistecData.services_order_book_times.find(
-                            x => x.id === item.hour,
-                          )?.name || '-'}
-                        </CoreText>
-                      </>
-                    )}
-                    right={props => (
-                      <View
-                        style={{
-                          flexDirection: 'column',
-                          justifyContent: 'center',
-                        }}>
-                        <List.Icon {...props} icon="chevron-right" />
-                        <CoreText
-                          style={
-                            {
-                              // color:
-                              //   appStoreUserProfile?.type === 1 &&
-                              //   item?.state === 11
-                              //     ? themeData?.colors?.primary
-                              //     : '#000',
-                            }
-                          }>
-                          {` (${
-                            item?.state === 11 &&
-                            appStoreUserProfile?.type !== 1
-                              ? 'Finalizado'
-                              : asistecData?.services_order_state?.find(
-                                  x => x.id === item?.state,
-                                )?.name || '-'
-                          })`}
-                        </CoreText>
-                      </View>
-                    )}
-                  />
-                  <Divider />
-                </React.Fragment>
-              ))}
+                      )}
+                    />
+                    <Divider />
+                  </React.Fragment>
+                );
+              })}
               {servicesCollection?.length > 0 ? (
                 <>
                   <CoreButton

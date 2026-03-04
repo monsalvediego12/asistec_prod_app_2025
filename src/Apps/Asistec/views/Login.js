@@ -87,7 +87,7 @@ function LoginView({navigation}) {
       console.error('error loginPhoneFnt', error);
       layoutRef?.current?.setSnack({
         state: true,
-        message: 'ERROR LOGIN ' + JSON.stringify(error),
+        message: 'ERROR LOGIN ' + error,
         type: 'error',
       });
     } finally {
