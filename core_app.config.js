@@ -1,6 +1,6 @@
 export default {
   name: 'App',
-  version: '0.1.10',
+  version: '0.1.11',
   is_dev: false, //__DEV__, Siempre debe ser DEV !!! se setea true para generar apk y revisar algunas cosas del panel DEV
   show_dev_menu: false, // Estando __DEV__ puede mostrar u ocultar el panel dev
   email_test: __DEV__ ? 'user1@test.com' : '',
@@ -138,7 +138,8 @@ export default {
       {
         id: 11,
         name: 'Entregado', // entregado
-        color: '#abfae43b',
+        color: '#1e8c5e99', // #1e8c5e99, 15775bcc
+        text_color: '#fff',
       },
       {
         id: 12,

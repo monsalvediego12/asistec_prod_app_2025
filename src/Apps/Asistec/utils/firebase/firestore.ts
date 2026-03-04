@@ -12,6 +12,13 @@ import uuid from 'react-native-uuid';
 import AppConfig from '@src/app.config';
 const asistecData = AppConfig.asistec_data;
 
+export interface AppConfigInterface {
+  id?: string | null;
+  code?: string | null;
+  actapdf_save_in_cloud?: boolean | null;
+  cotizacionpdf_save_in_cloud?: boolean | null;
+}
+
 export interface UserProfileInterface {
   id?: string | null;
   address?: string | null;
@@ -2083,6 +2090,21 @@ class ChatModel {
   };
 }
 
+
+class AppConfigModel {
+  static async getDefault(): Promise<AppConfigInterface | null> {
+    const snapshot = await (firestore() as FirebaseFirestoreTypes.Module)
+      .collection('config')
+      .where('code', '==', 'DEFAULT')
+      .limit(1)
+      .get();
+    if (snapshot.empty) return null;
+    const doc = snapshot.docs[0];
+    console.log('AppConfigModel.getDefault doc.data()', doc.data());
+    return {id: doc.id, ...doc.data()} as AppConfigInterface;
+  }
+}
+
 // FUNCIONES
 
 const verificarCoincidencia = ({item, keys, search_q}: any) => {
@@ -2236,6 +2258,7 @@ export {
   NotificationsLogsModel,
   ChatModel,
   CitiesConfigModel,
+  AppConfigModel,
   convertTimestamp,
   convertTimestampToDate,
   getStorageApp,
