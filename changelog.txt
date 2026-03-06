@@ -8,3 +8,5 @@
 0.1.10 Se migra version de react native, notificacion anual google cloud run
 03-03-2026
 0.1.11 Documento cotizacion, config pdf guardar en cloud, ajustes chatView, listado de servicios
+05-03-2026
+0.1.12 Ajuste modal de firmas

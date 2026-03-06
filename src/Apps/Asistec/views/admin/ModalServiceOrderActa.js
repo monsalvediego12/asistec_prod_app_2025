@@ -18,7 +18,7 @@ import {
   CoreIconMaterialCommunity,
   CoreBottomSheet,
 } from '@src/components/';
-import {IconButton, List, DataTable} from 'react-native-paper';
+import { IconButton, List, DataTable } from 'react-native-paper';
 import AppConfig from '@src/app.config';
 const asistecData = AppConfig.asistec_data;
 
@@ -29,19 +29,19 @@ import {
   ServiceOrderActaModel,
   ServiceOrderCotizacionModel,
 } from '@src/Apps/Asistec/utils/firebase/firestore';
-import {cropText, formatPrice} from '@src/utils/formaters';
-import {useFocusEffect} from '@react-navigation/native';
-import {useCoreTheme} from '@src/themes';
-import {useAppStore} from '@src/store';
-import {BottomSheetTextInput} from '@gorhom/bottom-sheet';
+import { cropText, formatPrice } from '@src/utils/formaters';
+import { useFocusEffect } from '@react-navigation/native';
+import { useCoreTheme } from '@src/themes';
+import { useAppStore } from '@src/store';
+import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import uuid from 'react-native-uuid';
 import SignatureScreen from 'react-native-signature-canvas';
 import firestore from '@react-native-firebase/firestore';
 import AppLayout from '@src/Apps/Asistec/components/AppLayout';
 
 const ListActions = React.memo(
-  React.forwardRef(({item, loading, onSaveItem, onAction}, ref) => {
-    const {themeData} = useCoreTheme();
+  React.forwardRef(({ item, loading, onSaveItem, onAction }, ref) => {
+    const { themeData } = useCoreTheme();
     // const [description, setDescription] = React.useState('');
 
     React.useImperativeHandle(ref, () => ({
@@ -55,7 +55,7 @@ const ListActions = React.memo(
     };
 
     return (
-      <View style={{paddingHorizontal: 10}}>
+      <View style={{ paddingHorizontal: 10 }}>
         {/* <View
           style={{
             flexDirection: 'row',
@@ -85,8 +85,8 @@ const ListActions = React.memo(
 );
 
 const FormObs = React.memo(
-  React.forwardRef(({loading, onSaveItem, onClose}, ref) => {
-    const {themeData} = useCoreTheme();
+  React.forwardRef(({ loading, onSaveItem, onClose }, ref) => {
+    const { themeData } = useCoreTheme();
     const [item, setItem] = React.useState({});
     const [description, setDescription] = React.useState('');
 
@@ -108,8 +108,8 @@ const FormObs = React.memo(
     };
 
     return (
-      <View style={{flex: 1, paddingHorizontal: 10}}>
-        <View style={{flex: 1}}>
+      <View style={{ flex: 1, paddingHorizontal: 10 }}>
+        <View style={{ flex: 1 }}>
           <View
             style={{
               flexDirection: 'row',
@@ -117,8 +117,8 @@ const FormObs = React.memo(
               alignContent: 'center',
             }}>
             <CoreText>Observacion</CoreText>
-            <Pressable onPress={() => onClose()} style={{padding: 5}}>
-              <CoreText style={{color: themeData.colors.error}}>
+            <Pressable onPress={() => onClose()} style={{ padding: 5 }}>
+              <CoreText style={{ color: themeData.colors.error }}>
                 Cerrar
               </CoreText>
             </Pressable>
@@ -135,11 +135,11 @@ const FormObs = React.memo(
                 size="large"
                 color={themeData.colors.asistectSec}
               />
-              <CoreText style={{paddingTop: 10}}>Cargando...</CoreText>
+              <CoreText style={{ paddingTop: 10 }}>Cargando...</CoreText>
             </View>
           ) : (
-            <View style={{padding: 10, paddingTop: 0}}>
-              <CoreText style={{paddingTop: 10, paddingBottom: 5}}>
+            <View style={{ padding: 10, paddingTop: 0 }}>
+              <CoreText style={{ paddingTop: 10, paddingBottom: 5 }}>
                 Descripcion
               </CoreText>
               <View
@@ -167,7 +167,7 @@ const FormObs = React.memo(
           )}
         </View>
 
-        <View style={{paddingVertical: 10}}>
+        <View style={{ paddingVertical: 10 }}>
           <CoreButton mode="contained" onPress={() => onSave()}>
             Guardar
           </CoreButton>
@@ -177,19 +177,19 @@ const FormObs = React.memo(
   }),
 );
 
-function AppView({route, navigation}) {
+function AppView({ route, navigation }) {
   const params = route.params;
-  const {appStoreUserProfile} = useAppStore();
+  const { appStoreUserProfile } = useAppStore();
 
-  const {themeData} = useCoreTheme();
-  
+  const { themeData } = useCoreTheme();
+
   // Navegar usando NavigationService para ser consistente
   const goBack = () => {
     // Ir siempre a ModalServiceTrackingDetails con el service_id correcto
     NavigationService.navigate({
       name: 'ModalServiceTrackingDetails',
       params: {
-        service: {id: params?.service_order_id}
+        service: { id: params?.service_order_id }
       }
     });
   };
@@ -228,8 +228,8 @@ function AppView({route, navigation}) {
     React.useCallback(() => {
       let servData;
       let unsubscribeService;
-      let unsubscribeMediaServiceOrder = () => {};
-      let unsubscribeActaServiceOrder = () => {};
+      let unsubscribeMediaServiceOrder = () => { };
+      let unsubscribeActaServiceOrder = () => { };
 
       const fetchServiceData = async () => {
         return new Promise((resolve, reject) => {
@@ -275,7 +275,7 @@ function AppView({route, navigation}) {
           .onSnapshot(querySnapshot => {
             const data = querySnapshot?.empty
               ? []
-              : querySnapshot?.docs.map(x => ({id: x.id, ...x.data()}));
+              : querySnapshot?.docs.map(x => ({ id: x.id, ...x.data() }));
             for (mediaIndex in data) {
               if (data[mediaIndex].type === 3) {
                 setMediaAntes(data[mediaIndex]);
@@ -294,7 +294,7 @@ function AppView({route, navigation}) {
           .onSnapshot(querySnapshot => {
             let data = querySnapshot?.empty
               ? null
-              : querySnapshot?.docs.map(x => ({id: x.id, ...x.data()}))[0];
+              : querySnapshot?.docs.map(x => ({ id: x.id, ...x.data() }))[0];
             setServiceActaData(data);
           });
       };
@@ -306,7 +306,7 @@ function AppView({route, navigation}) {
           .onSnapshot(querySnapshot => {
             const data = querySnapshot?.empty
               ? {}
-              : querySnapshot?.docs.map(x => ({id: x.id, ...x.data()}))[0];
+              : querySnapshot?.docs.map(x => ({ id: x.id, ...x.data() }))[0];
             setServiceCotizacion(data);
           });
       };
@@ -419,7 +419,7 @@ function AppView({route, navigation}) {
 
   const saveServiceActaChanges = async (serviceActa = serviceActaData) => {
     // if (serviceData.state !== 5 || appStoreUserProfile.type === 3) return;
-    layoutRef?.current?.setLoading({state: true});
+    layoutRef?.current?.setLoading({ state: true });
     let dataSend = {
       service_order_id: serviceData.id,
       state: serviceActa?.state || 1,
@@ -444,16 +444,16 @@ function AppView({route, navigation}) {
       });
       closeBottomSheetFormObs();
     }
-    layoutRef?.current?.setLoading({state: false});
+    layoutRef?.current?.setLoading({ state: false });
   };
 
   const saveIemObs = async item => {
-    const serviceActa = {...serviceActaData};
-    const itemN = {...item};
+    const serviceActa = { ...serviceActaData };
+    const itemN = { ...item };
     if (itemN.id) {
       let nuevaLista = serviceActa?.obs?.map(obj => {
         if (obj.id === itemN.id) {
-          return {...obj, ...itemN};
+          return { ...obj, ...itemN };
         }
         return obj;
       });
@@ -480,14 +480,14 @@ function AppView({route, navigation}) {
   const deleteObs = async (id = itemSelectedAction.id) => {
     const newObsList = serviceActaData?.obs?.filter(x => x.id !== id) || [];
     let order;
-    layoutRef?.current?.setLoading({state: true});
+    layoutRef?.current?.setLoading({ state: true });
     if (serviceActaData.id) {
       order = await ServiceOrderActaModel.update({
         id: serviceActaData.id,
         obs: newObsList,
       });
     } else {
-      setServiceActaData({...serviceActaData, obs: newObsList});
+      setServiceActaData({ ...serviceActaData, obs: newObsList });
     }
     if (order) {
       // await setForm();
@@ -496,7 +496,7 @@ function AppView({route, navigation}) {
         message: 'Correcto.',
       });
     }
-    layoutRef?.current?.setLoading({state: false});
+    layoutRef?.current?.setLoading({ state: false });
   };
 
   const onAddSignature = () => {
@@ -508,13 +508,13 @@ function AppView({route, navigation}) {
 
   const onAcceptSignature = async signature => {
     setModalSignatureVisible(false);
-    layoutRef?.current?.setLoading({state: true});
+    layoutRef?.current?.setLoading({ state: true });
     await saveServiceActaChanges({
       ...serviceActaData,
       signature_b64: signature,
       signature_date: new Date(),
     });
-    layoutRef?.current?.setLoading({state: false});
+    layoutRef?.current?.setLoading({ state: false });
   };
 
   const onAcceptActa = async () => {
@@ -529,7 +529,7 @@ function AppView({route, navigation}) {
       });
       return;
     }
-    await saveServiceActaChanges({...serviceActaData, state: 3});
+    await saveServiceActaChanges({ ...serviceActaData, state: 3 });
     goBack();
   };
   const onRejectActa = async () => {
@@ -544,7 +544,7 @@ function AppView({route, navigation}) {
       });
       return;
     }
-    await saveServiceActaChanges({...serviceActaData, state: 2});
+    await saveServiceActaChanges({ ...serviceActaData, state: 2 });
     goBack();
   };
 
@@ -562,32 +562,30 @@ function AppView({route, navigation}) {
         <ScrollView>
           {showContent ? (
             <>
-              <View style={{paddingHorizontal: 10, marginBottom: 15}}>
+              <View style={{ paddingHorizontal: 10, marginBottom: 15 }}>
                 <KeyboardAvoidingView>
                   <View
                     style={{
                       flexDirection: 'row',
                       paddingTop: 10,
                     }}>
-                    <View style={{flex: 1}}>
+                    <View style={{ flex: 1 }}>
                       <CoreTextInput
                         label="Fecha"
                         dense
-                        style={{fontSize: 14, backgroundColor: 'transparent'}}
-                        value={`${
-                          convertTimestamp(serviceData?.date, 'dd-MM-yyyy') ||
+                        style={{ fontSize: 14, backgroundColor: 'transparent' }}
+                        value={`${convertTimestamp(serviceData?.date, 'dd-MM-yyyy') ||
                           '-'
-                        } - ${
-                          asistecData?.services_order_book_times?.find(
+                          } - ${asistecData?.services_order_book_times?.find(
                             x => x.id === serviceData?.hour,
                           )?.name || ''
-                        }`}
+                          }`}
                         editable={false}
                       />
                       <CoreTextInput
                         label="Cliente"
                         dense
-                        style={{fontSize: 14, backgroundColor: 'transparent'}}
+                        style={{ fontSize: 14, backgroundColor: 'transparent' }}
                         value={cropText(serviceData?.customer?.full_name, 20)}
                         editable={false}
                       />
@@ -619,12 +617,12 @@ function AppView({route, navigation}) {
                     <CoreText>
                       Por medio de la presente me dirijo a ustedes con el fin de
                       entregarles soporte de las labores realizadas el día{' '}
-                      <CoreText style={{fontWeight: 'bold'}}>
+                      <CoreText style={{ fontWeight: 'bold' }}>
                         {convertTimestamp(serviceData?.date, 'dd-MM-yyyy') ||
                           '-'}
                       </CoreText>
                       , visita que fue recibida por{' '}
-                      <CoreText style={{fontWeight: 'bold'}}>
+                      <CoreText style={{ fontWeight: 'bold' }}>
                         {serviceData?.customer?.full_name || ''}
                       </CoreText>{' '}
                       y en la cual se evidencia lo siguiente:
@@ -659,12 +657,12 @@ function AppView({route, navigation}) {
                           serviceCotizacion?.items?.map(item => (
                             <DataTable.Row
                               key={item.id}
-                              // onPress={() =>
-                              //   openBottomSheetActionsCot(item, 1)
-                              // }
+                            // onPress={() =>
+                            //   openBottomSheetActionsCot(item, 1)
+                            // }
                             >
                               <DataTable.Cell
-                                style={{flex: 1}}
+                                style={{ flex: 1 }}
                                 numberOfLines={10}>
                                 <CoreText
                                   numberOfLines={10}
@@ -689,12 +687,12 @@ function AppView({route, navigation}) {
 
                         <DataTable.Row>
                           <DataTable.Cell>
-                            <CoreText style={{fontWeight: 'bold'}}>
+                            <CoreText style={{ fontWeight: 'bold' }}>
                               Total
                             </CoreText>
                           </DataTable.Cell>
                           <DataTable.Cell numeric>
-                            <CoreText style={{fontWeight: 'bold'}}>
+                            <CoreText style={{ fontWeight: 'bold' }}>
                               COP {formatPrice(totalCot(), null)}
                             </CoreText>
                           </DataTable.Cell>
@@ -740,10 +738,10 @@ function AppView({route, navigation}) {
                       {mediaAntes?.media?.map(img => (
                         <View
                           key={img.url || img.name}
-                          style={{marginHorizontal: 5}}>
+                          style={{ marginHorizontal: 5 }}>
                           <View
                             key={img.url || img.name}
-                            style={{position: 'relative'}}>
+                            style={{ position: 'relative' }}>
                             <CoreImageModal
                               key={img.url || img.name}
                               source={{
@@ -759,7 +757,7 @@ function AppView({route, navigation}) {
                             />
                             {appStoreUserProfile.id ===
                               serviceData?.technical_id &&
-                            serviceData.state === 6 ? (
+                              serviceData.state === 6 ? (
                               <TouchableOpacity
                                 style={{
                                   position: 'absolute',
@@ -824,10 +822,10 @@ function AppView({route, navigation}) {
                       {mediaDespues?.media?.map(img => (
                         <View
                           key={img.url || img.name}
-                          style={{marginHorizontal: 5}}>
+                          style={{ marginHorizontal: 5 }}>
                           <View
                             key={img.url || img.name}
-                            style={{position: 'relative'}}>
+                            style={{ position: 'relative' }}>
                             <CoreImageModal
                               key={img.url || img.name}
                               source={{
@@ -843,7 +841,7 @@ function AppView({route, navigation}) {
                             />
                             {appStoreUserProfile.id ===
                               serviceData?.technical_id &&
-                            serviceData.state === 6 ? (
+                              serviceData.state === 6 ? (
                               <TouchableOpacity
                                 style={{
                                   position: 'absolute',
@@ -884,12 +882,12 @@ function AppView({route, navigation}) {
                       Observaciones y recomendaciones
                     </CoreText>
                     {serviceData?.state === 7 &&
-                    !(
-                      serviceActaData?.signature_b64 &&
-                      serviceActaData?.signature_b64 !== ''
-                    ) &&
-                    (appStoreUserProfile?.id === serviceData?.technical_id ||
-                      appStoreUserProfile?.type === 1) ? (
+                      !(
+                        serviceActaData?.signature_b64 &&
+                        serviceActaData?.signature_b64 !== ''
+                      ) &&
+                      (appStoreUserProfile?.id === serviceData?.technical_id ||
+                        appStoreUserProfile?.type === 1) ? (
                       <>
                         <IconButton
                           style={{}}
@@ -920,7 +918,7 @@ function AppView({route, navigation}) {
                           name="checkbox-blank-circle"
                           size={10}
                           color="#000"
-                          style={{paddingRight: 5, marginTop: 2}}
+                          style={{ paddingRight: 5, marginTop: 2 }}
                         />
                         <CoreText>{item.description}</CoreText>
                       </Pressable>
@@ -929,7 +927,7 @@ function AppView({route, navigation}) {
                     <></>
                   )}
 
-                  <CoreText style={{paddingTop: 10}}>
+                  <CoreText style={{ paddingTop: 10 }}>
                     Para este trabajo, en relación con el decreto 0723 del 2013
                     de la súper intendencia de industria y comercio, se entrega
                     bajo una garantía de 90 días.
@@ -1038,19 +1036,19 @@ function AppView({route, navigation}) {
                 size="large"
                 color={themeData.colors.asistectSec}
               />
-              <CoreText style={{paddingTop: 10}}>Cargando...</CoreText>
+              <CoreText style={{ paddingTop: 10 }}>Cargando...</CoreText>
             </View>
           )}
         </ScrollView>
 
         {showContent ? (
           <>
-            <View style={{paddingHorizontal: 10, paddingVertical: 5}}>
+            <View style={{ paddingHorizontal: 10, paddingVertical: 5 }}>
               {serviceActaData?.state !== 3 &&
-              serviceData?.state === 7 &&
-              ((appStoreUserProfile?.type === 3 &&
-                appStoreUserProfile?.id === serviceData?.customer_id) ||
-                appStoreUserProfile?.type === 1) ? (
+                serviceData?.state === 7 &&
+                ((appStoreUserProfile?.type === 3 &&
+                  appStoreUserProfile?.id === serviceData?.customer_id) ||
+                  appStoreUserProfile?.type === 1) ? (
                 <>
                   <View
                     style={{
@@ -1146,23 +1144,26 @@ function AppView({route, navigation}) {
               clearText="Limpiar"
               confirmText="Aceptar"
               descriptionText="Firma cliente"
-              // webStyle={
-              //   '.m-signature-pad--footer {display: none; margin: 0px;}'
-              // }
+              webStyle={
+                '.m-signature-pad--footer {display: none; margin: 0px;}'
+              }
             />
-            <Pressable
-              style={[
-                styles.button,
-                styles.buttonClose,
-                {
-                  marginVertical: 10,
-                  marginHorizontal: 10,
-                  backgroundColor: themeData.colors.asistectSec,
-                },
-              ]}
-              onPress={() => setModalSignatureVisible(!modalSignatureVisible)}>
-              <CoreText style={styles.textStyle}>Cancelar</CoreText>
-            </Pressable>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 10, paddingBottom: 10 }}>
+              <CoreButton
+                mode="contained"
+                onPress={() => setModalSignatureVisible(false)}
+                style={{ flex: 1, backgroundColor: 'grey', marginRight: 5 }}>
+                Cancelar
+              </CoreButton>
+              <CoreButton
+                mode="contained"
+                onPress={() => {
+                  signatureRef.current.readSignature();
+                }}
+                style={{ flex: 1, backgroundColor: themeData.colors.asistectSec, marginLeft: 5 }}>
+                Aceptar
+              </CoreButton>
+            </View>
           </View>
         </Modal>
 

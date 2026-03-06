@@ -17,7 +17,7 @@ import {
   CoreIconMaterialCommunity,
   CoreBottomSheet,
 } from '@src/components/';
-import {IconButton, List} from 'react-native-paper';
+import { IconButton, List } from 'react-native-paper';
 import AppConfig from '@src/app.config';
 import AppLayout from '@src/Apps/Asistec/components/AppLayout';
 import {
@@ -27,20 +27,20 @@ import {
   ServiceOrderActaModel,
   ServiceOrderAdmTechDeliveyModel,
 } from '@src/Apps/Asistec/utils/firebase/firestore';
-import {cropText} from '@src/utils/formaters';
-import {useFocusEffect} from '@react-navigation/native';
-import {useCoreTheme} from '@src/themes';
-import {useAppStore} from '@src/store';
-import {BottomSheetTextInput} from '@gorhom/bottom-sheet';
+import { cropText } from '@src/utils/formaters';
+import { useFocusEffect } from '@react-navigation/native';
+import { useCoreTheme } from '@src/themes';
+import { useAppStore } from '@src/store';
+import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import uuid from 'react-native-uuid';
 import SignatureScreen from 'react-native-signature-canvas';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 const asistecData = AppConfig.asistec_data;
 
 const ListActions = React.memo(
-  React.forwardRef(({item, loading, onSaveItem, onAction}, ref) => {
-    const {themeData} = useCoreTheme();
+  React.forwardRef(({ item, loading, onSaveItem, onAction }, ref) => {
+    const { themeData } = useCoreTheme();
     // const [description, setDescription] = React.useState('');
 
     React.useImperativeHandle(ref, () => ({
@@ -54,7 +54,7 @@ const ListActions = React.memo(
     };
 
     return (
-      <View style={{paddingHorizontal: 10}}>
+      <View style={{ paddingHorizontal: 10 }}>
         {/* <View
           style={{
             flexDirection: 'row',
@@ -84,8 +84,8 @@ const ListActions = React.memo(
 );
 
 const FormObs = React.memo(
-  React.forwardRef(({loading, onSaveItem, onClose}, ref) => {
-    const {themeData} = useCoreTheme();
+  React.forwardRef(({ loading, onSaveItem, onClose }, ref) => {
+    const { themeData } = useCoreTheme();
     const [item, setItem] = React.useState({});
     const [description, setDescription] = React.useState('');
 
@@ -107,8 +107,8 @@ const FormObs = React.memo(
     };
 
     return (
-      <View style={{flex: 1, paddingHorizontal: 10}}>
-        <View style={{flex: 1}}>
+      <View style={{ flex: 1, paddingHorizontal: 10 }}>
+        <View style={{ flex: 1 }}>
           <View
             style={{
               flexDirection: 'row',
@@ -116,8 +116,8 @@ const FormObs = React.memo(
               alignContent: 'center',
             }}>
             <CoreText>Observacion</CoreText>
-            <Pressable onPress={() => onClose()} style={{padding: 5}}>
-              <CoreText style={{color: themeData.colors.error}}>
+            <Pressable onPress={() => onClose()} style={{ padding: 5 }}>
+              <CoreText style={{ color: themeData.colors.error }}>
                 Cerrar
               </CoreText>
             </Pressable>
@@ -134,11 +134,11 @@ const FormObs = React.memo(
                 size="large"
                 color={themeData.colors.asistectSec}
               />
-              <CoreText style={{paddingTop: 10}}>Cargando...</CoreText>
+              <CoreText style={{ paddingTop: 10 }}>Cargando...</CoreText>
             </View>
           ) : (
-            <View style={{padding: 10, paddingTop: 0}}>
-              <CoreText style={{paddingTop: 10, paddingBottom: 5}}>
+            <View style={{ padding: 10, paddingTop: 0 }}>
+              <CoreText style={{ paddingTop: 10, paddingBottom: 5 }}>
                 Descripcion
               </CoreText>
               <View
@@ -166,7 +166,7 @@ const FormObs = React.memo(
           )}
         </View>
 
-        <View style={{paddingVertical: 10}}>
+        <View style={{ paddingVertical: 10 }}>
           <CoreButton mode="contained" onPress={() => onSave()}>
             Guardar
           </CoreButton>
@@ -176,11 +176,11 @@ const FormObs = React.memo(
   }),
 );
 
-function AppView({route, navigation}) {
+function AppView({ route, navigation }) {
   const params = route.params;
-  const {appStoreUserProfile} = useAppStore();
+  const { appStoreUserProfile } = useAppStore();
 
-  const {themeData} = useCoreTheme();
+  const { themeData } = useCoreTheme();
 
   // Navegar usando NavigationService para ser consistente
   const goBack = () => {
@@ -188,7 +188,7 @@ function AppView({route, navigation}) {
     NavigationService.navigate({
       name: 'ModalServiceTracking',
       params: {
-        service: {id: params?.service_order_id}
+        service: { id: params?.service_order_id }
       }
     });
   };
@@ -293,7 +293,7 @@ function AppView({route, navigation}) {
 
   const saveServiceActaChanges = async (serviceActa = serviceDeliveryData) => {
     // if (serviceData.state !== 5 || appStoreUserProfile.type === 3) return;
-    layoutRef?.current?.setLoading({state: true});
+    layoutRef?.current?.setLoading({ state: true });
 
     let order = null;
     if (serviceActa.id) {
@@ -310,16 +310,16 @@ function AppView({route, navigation}) {
       });
       closeBottomSheetFormObs();
     }
-    layoutRef?.current?.setLoading({state: false});
+    layoutRef?.current?.setLoading({ state: false });
   };
 
   const saveIemObs = async item => {
-    const serviceActa = {...serviceDeliveryData};
-    const itemN = {...item};
+    const serviceActa = { ...serviceDeliveryData };
+    const itemN = { ...item };
     if (itemN.id) {
       let nuevaLista = serviceActa?.obs?.map(obj => {
         if (obj.id === itemN.id) {
-          return {...obj, ...itemN};
+          return { ...obj, ...itemN };
         }
         return obj;
       });
@@ -346,14 +346,14 @@ function AppView({route, navigation}) {
   const deleteObs = async (id = itemSelectedAction.id) => {
     const newObsList = serviceDeliveryData?.obs?.filter(x => x.id !== id) || [];
     let order;
-    layoutRef?.current?.setLoading({state: true});
+    layoutRef?.current?.setLoading({ state: true });
     if (serviceDeliveryData.id) {
       order = await ServiceOrderActaModel.update({
         id: serviceDeliveryData.id,
         obs: newObsList,
       });
     } else {
-      setServiceDeliveryData({...serviceDeliveryData, obs: newObsList});
+      setServiceDeliveryData({ ...serviceDeliveryData, obs: newObsList });
     }
     if (order) {
       await setForm();
@@ -362,7 +362,7 @@ function AppView({route, navigation}) {
         message: 'Correcto.',
       });
     }
-    layoutRef?.current?.setLoading({state: false});
+    layoutRef?.current?.setLoading({ state: false });
   };
 
   const onAddSignature = type => {
@@ -382,7 +382,7 @@ function AppView({route, navigation}) {
 
   const onAcceptSignature = async signature => {
     setModalSignatureVisible(false);
-    layoutRef?.current?.setLoading({state: true});
+    layoutRef?.current?.setLoading({ state: true });
     let dataSend = {
       service_order_id: serviceData?.id,
     };
@@ -399,7 +399,7 @@ function AppView({route, navigation}) {
       dataSend.id = serviceDeliveryData?.id;
     }
     await saveServiceActaChanges(dataSend);
-    layoutRef?.current?.setLoading({state: false});
+    layoutRef?.current?.setLoading({ state: false });
   };
 
   const onAcceptDelivery = async () => {
@@ -409,17 +409,17 @@ function AppView({route, navigation}) {
     ) {
       return;
     }
-    layoutRef?.current?.setLoading({state: true});
+    layoutRef?.current?.setLoading({ state: true });
     // await saveServiceActaChanges(dataSend);
     const order = await ServiceOrderModel.updateServiceOrder({
       id: serviceData.id,
       state: 11,
     });
-    layoutRef?.current?.setLoading({state: false});
+    layoutRef?.current?.setLoading({ state: false });
     NavigationService.navigate({
       name: 'ModalServiceTracking',
       params: {
-        service: {id: params?.service_order_id}
+        service: { id: params?.service_order_id }
       }
     });
   };
@@ -430,13 +430,13 @@ function AppView({route, navigation}) {
         <ScrollView>
           {showContent ? (
             <>
-              <View style={{flex: 1, paddingHorizontal: 10, marginBottom: 15}}>
+              <View style={{ flex: 1, paddingHorizontal: 10, marginBottom: 15 }}>
                 <View
                   style={{
                     flexDirection: 'row',
                     paddingTop: 10,
                   }}>
-                  <View style={{flex: 1}}>
+                  <View style={{ flex: 1 }}>
                     <CoreTextInput
                       label={`Servicio #${serviceData?.consecutive || ''}`}
                       dense
@@ -446,19 +446,17 @@ function AppView({route, navigation}) {
                     <CoreTextInput
                       dense
                       label="Fecha"
-                      style={{fontSize: 14, backgroundColor: 'transparent'}}
-                      value={`${
-                        convertTimestamp(serviceData?.date, 'dd-MM-yyyy') || '-'
-                      } - ${
-                        asistecData?.services_order_book_times?.find(
+                      style={{ fontSize: 14, backgroundColor: 'transparent' }}
+                      value={`${convertTimestamp(serviceData?.date, 'dd-MM-yyyy') || '-'
+                        } - ${asistecData?.services_order_book_times?.find(
                           x => x.id === serviceData?.hour,
                         )?.name || ''
-                      }`}
+                        }`}
                       editable={false}
                     />
                     <CoreTextInput
                       label="Cliente"
-                      style={{fontSize: 14, backgroundColor: 'transparent'}}
+                      style={{ fontSize: 14, backgroundColor: 'transparent' }}
                       dense
                       value={cropText(serviceData?.customer?.full_name, 20)}
                       editable={false}
@@ -485,7 +483,7 @@ function AppView({route, navigation}) {
                   </View>
                 </View>
 
-                <CoreText variant="titleLarge" style={{marginTop: 10}}>
+                <CoreText variant="titleLarge" style={{ marginTop: 10 }}>
                   Entega de servicio
                 </CoreText>
                 <View
@@ -534,7 +532,7 @@ function AppView({route, navigation}) {
                     }}>
                     {(serviceDeliveryData?.signature_b64_tech &&
                       serviceDeliveryData?.signature_b64_tech !== '') ||
-                    serviceData?.state === 11 ? (
+                      serviceData?.state === 11 ? (
                       <>
                         <Pressable onPress={() => onAddSignature(2)}>
                           <CoreImage
@@ -549,8 +547,8 @@ function AppView({route, navigation}) {
                             source={
                               serviceDeliveryData?.signature_b64_tech
                                 ? {
-                                    uri: serviceDeliveryData?.signature_b64_tech,
-                                  }
+                                  uri: serviceDeliveryData?.signature_b64_tech,
+                                }
                                 : require('@src/Apps/Asistec/assets/img/image-remove.png')
                             }
                           />
@@ -589,7 +587,7 @@ function AppView({route, navigation}) {
                     justifyContent: 'center',
                   }}>
                   <CoreButton
-                    style={{marginTop: 20}}
+                    style={{ marginTop: 20 }}
                     mode="contained"
                     onPress={() =>
                       navigation.navigate('ModalServiceTrackingDetails', {
@@ -620,18 +618,18 @@ function AppView({route, navigation}) {
                 size="large"
                 color={themeData.colors.asistectSec}
               />
-              <CoreText style={{paddingTop: 10}}>Cargando...</CoreText>
+              <CoreText style={{ paddingTop: 10 }}>Cargando...</CoreText>
             </View>
           )}
         </ScrollView>
 
         {showContent && serviceData?.state === 10 ? (
           <>
-            <View style={{padding: 10}}>
+            <View style={{ padding: 10 }}>
               <CoreButton
                 mode="contained"
                 onPress={() => onAcceptDelivery()}
-                style={{backgroundColor: themeData.colors.asistectSec}}>
+                style={{ backgroundColor: themeData.colors.asistectSec }}>
                 Entregar
               </CoreButton>
             </View>
@@ -661,23 +659,29 @@ function AppView({route, navigation}) {
                 signatureType === 1
                   ? 'Firma admin'
                   : signatureType === 2
-                  ? 'Firma tecnico'
-                  : ''
+                    ? 'Firma tecnico'
+                    : ''
+              }
+              webStyle={
+                '.m-signature-pad--footer {display: none; margin: 0px;}'
               }
             />
-            <Pressable
-              style={[
-                styles.button,
-                styles.buttonClose,
-                {
-                  marginVertical: 10,
-                  marginHorizontal: 10,
-                  backgroundColor: themeData.colors.asistectSec,
-                },
-              ]}
-              onPress={() => setModalSignatureVisible(!modalSignatureVisible)}>
-              <CoreText style={styles.textStyle}>Cancelar</CoreText>
-            </Pressable>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 10, paddingBottom: 10 }}>
+              <CoreButton
+                mode="contained"
+                onPress={() => setModalSignatureVisible(false)}
+                style={{ flex: 1, backgroundColor: 'grey', marginRight: 5 }}>
+                Cancelar
+              </CoreButton>
+              <CoreButton
+                mode="contained"
+                onPress={() => {
+                  signatureRef.current.readSignature();
+                }}
+                style={{ flex: 1, backgroundColor: themeData.colors.asistectSec, marginLeft: 5 }}>
+                Aceptar
+              </CoreButton>
+            </View>
           </View>
         </Modal>
 

@@ -1,11 +1,11 @@
 export default {
   name: 'App',
-  version: '0.1.11',
+  version: '0.1.12',
   is_dev: false, //__DEV__, Siempre debe ser DEV !!! se setea true para generar apk y revisar algunas cosas del panel DEV
   show_dev_menu: false, // Estando __DEV__ puede mostrar u ocultar el panel dev
   email_test: __DEV__ ? 'user1@test.com' : '',
   user_test: __DEV__ ? '1111111111' : '',
-  pass_test: __DEV__ ? '123456' : '', // 'abcd.1234' : '',
+  pass_test: __DEV__ ? '454097' : '', // 'abcd.1234' : '',
   host_backend: 'http://192.168.10.179:8000', //'https://07d7-186-83-255-56.ngrok-free.app', // 'http://192.168.10.60:8000',
   android_apikey: 'AIzaSyA468-FD6yfAZy1ZEjIU-Nx7mrkKxP49-0',
   ios_apikey: 'AIzaSyDFsMmvYTxzNl2vwyn3vpemUu7rNlMkaA0',
