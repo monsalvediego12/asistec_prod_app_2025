@@ -44,7 +44,7 @@ function LoginView({navigation}) {
   } = useForm({
     defaultValues: {
       userInput: AppConfig.user_test,
-      codeInput: __DEV__ ? '123456' : '',
+      codeInput: __DEV__ ? AppConfig.pass_test : '',
       emailInput: AppConfig.email_test,
       passwordInput: AppConfig.pass_test,
     },
